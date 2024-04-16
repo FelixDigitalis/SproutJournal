@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 
 class SettingsMenu extends StatefulWidget {
-  //const SettingsMenu({super.key});
-
+  const SettingsMenu({super.key});
   @override
   State<SettingsMenu> createState() => _SettingsMenuState();
 }
