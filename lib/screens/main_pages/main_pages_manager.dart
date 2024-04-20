@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'elements/bottom_bar_element.dart';
-import 'settings.dart';
-import 'pages/friends_page.dart';
-import 'pages/journal_page.dart';
-import 'pages/plant_page.dart';
+import '../elements/bottom_bar_element.dart';
+import '../pages/settings_page.dart';
+import 'friends_page.dart';
+import 'journal_page.dart';
+import 'plant_page.dart';
 
 class PageManager extends StatefulWidget {
   const PageManager({super.key});
@@ -36,26 +36,17 @@ class _PageManagerState extends State<PageManager> {
                 fontWeight: FontWeight.w600)),
         backgroundColor: Colors.green[800],
         actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: (String result) {
-              switch (result) {
-                case 'settings':
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsMenu()),
-                  );
-                  break;
-              }
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.white),
+            tooltip: 'Settings',
+            onPressed: () {
+              // Navigate to the SettingsMenu page when the icon is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsMenu()),
+              );
             },
-            // Settings Menu Pop up menu
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'settings',
-                child: Text('Settings'),
-              ),
-            ],
-          ),
+          )
         ],
       ),
       body: Center(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'app.dart';
 import 'package:logger/logger.dart';
 
+
+// TODO: define colors file annd change colr uses in file
 void main() {
   Logger logger = Logger(
     printer: PrettyPrinter(),

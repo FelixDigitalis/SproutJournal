@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprout_journal/screens/elements/plant_lib_element.dart';
+import 'package:sprout_journal/screens/elements/plant_library_element.dart';
 import '../../plants/plant_manager.dart';
 import '../../plants/plant_model.dart';
 
@@ -12,8 +12,6 @@ class PlantPage extends StatefulWidget {
 
 class _PlantPageState extends State<PlantPage> {
   late Future<List<Plant>> _plants;
-  // TODO: remove standard image 
-  String standardPlantImage = "./assets/images/standard_plant.png";
 
   @override
   void initState() {
@@ -37,7 +35,7 @@ class _PlantPageState extends State<PlantPage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   Plant plant = snapshot.data![index];
-                  return PlantLibElement(imagePath: standardPlantImage, title: plant.germanName);
+                  return PlantLibElement(plant: plant);
                 },
               );
             }

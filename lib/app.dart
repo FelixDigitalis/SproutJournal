@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/page_manager.dart';
+import 'screens/main_pages/main_pages_manager.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
