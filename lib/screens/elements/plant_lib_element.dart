@@ -19,15 +19,16 @@ class PlantLibElement extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.green, width: 2), 
-          borderRadius: BorderRadius.circular(8), 
+          color: Colors.lightGreen, 
+          //border: Border.all(color: Colors.green, width: 2),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           children: <Widget>[
             ClipRect(
               child: Align(
                 alignment: Alignment.center,
-                heightFactor: 0.3, 
+                heightFactor: 1, 
                 child: Image.asset(imagePath),
               ),
             ),

@@ -29,8 +29,12 @@ class _PageManagerState extends State<PageManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SproutJournal 🌱'),
-        backgroundColor: Colors.green,
+        title: const Text('SproutJournal 🌱',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w600)),
+        backgroundColor: Colors.green[800],
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (String result) {
@@ -38,7 +42,8 @@ class _PageManagerState extends State<PageManager> {
                 case 'settings':
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SettingsMenu()),
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsMenu()),
                   );
                   break;
               }
