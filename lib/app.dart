@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/view_manager.dart';
+import 'screens/page_manager.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -28,7 +28,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: PageManager(),
+      home: const PageManager(),
     );
   }
 }

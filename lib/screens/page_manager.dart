@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'elements/bottom_bar.dart';
+import 'elements/bottom_bar_element.dart';
 import 'settings.dart';
 import 'pages/friends_page.dart';
 import 'pages/journal_page.dart';
@@ -56,7 +56,7 @@ class _PageManagerState extends State<PageManager> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: CustomBottomBar(
+      bottomNavigationBar: BottomBarElement(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
       ),

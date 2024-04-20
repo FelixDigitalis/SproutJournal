@@ -1,11 +1,11 @@
 // navigation_bar.dart
 import 'package:flutter/material.dart';
 
-class CustomBottomBar extends StatelessWidget {
+class BottomBarElement extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
 
-  const CustomBottomBar({
+  const BottomBarElement({
     super.key,
     required this.selectedIndex,
     required this.onItemTapped,
@@ -22,6 +22,7 @@ class CustomBottomBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.local_florist),
           label: 'Pflanzen',
+  
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.people),

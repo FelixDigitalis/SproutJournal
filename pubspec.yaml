@@ -22,6 +22,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/plants.json
+    - assets/images/standard_plant.png
 
 flutter_launcher_icons:
   android : "launcher_icon" 
