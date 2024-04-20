@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'elements/bottom_bar.dart';
 import 'settings.dart';
 
 class Journal extends StatefulWidget {
@@ -53,24 +54,9 @@ class _JournalState extends State<Journal> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Journal',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_florist),
-            label: 'Pflanzen',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Gartenfreunde',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
-        onTap: _onItemTapped,
+      bottomNavigationBar: CustomBottomBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
       ),
     );
   }
