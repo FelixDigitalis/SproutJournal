@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'elements/bottom_bar.dart';
 import 'settings.dart';
+import 'pages/friends_page.dart';
+import 'pages/journal_page.dart';
+import 'pages/plant_page.dart';
 
-class Journal extends StatefulWidget {
-  const Journal({super.key});
+class PageManager extends StatefulWidget {
+  const PageManager({super.key});
   @override
-  State<Journal> createState() => _JournalState();
+  State<PageManager> createState() => _PageManagerState();
 }
 
-class _JournalState extends State<Journal> {
+class _PageManagerState extends State<PageManager> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Journal Page'),
-    Text('Pflanzen Page'),
-    Text('Gartenfreunde Page'),
+  final List<Widget> _widgetOptions = <Widget>[
+    const JournalPage(),
+    const PlantPage(),
+    const FriendsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -28,7 +31,6 @@ class _JournalState extends State<Journal> {
       appBar: AppBar(
         title: const Text('SproutJournal 🌱'),
         backgroundColor: Colors.green,
-        // Settings Menu
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (String result) {
@@ -36,7 +38,7 @@ class _JournalState extends State<Journal> {
                 case 'settings':
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingsMenu()),
+                    MaterialPageRoute(builder: (context) => const SettingsMenu()),
                   );
                   break;
               }
