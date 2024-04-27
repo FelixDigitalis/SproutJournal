@@ -4,16 +4,28 @@ import 'screens/main_pages/main_pages_manager.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SproutJournal',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primaryColor: const Color.fromRGBO(46, 125, 50, 1),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Color.fromRGBO(46, 125, 50, 1),
+          onPrimary: Colors.white,
+          secondary: Colors.lightGreen,
+          onSecondary: Colors.black,
+          error:  Colors.red,
+          onError: Colors.white,
+          background: Colors.white,
+          onBackground: Colors.black,
+          surface: Colors.lightGreen,
+          onSurface: Colors.white,
+        ),
+        scaffoldBackgroundColor:Colors.white,
       ),
-      home: const PageManager(),
+      home: const PageManager(), 
     );
   }
 }

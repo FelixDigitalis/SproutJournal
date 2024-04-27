@@ -34,7 +34,7 @@ class _PageManagerState extends State<PageManager> {
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w600)),
-        backgroundColor: Colors.green[800],
+        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.settings, color: Colors.white),

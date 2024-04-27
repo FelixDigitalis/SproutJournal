@@ -5,8 +5,8 @@ class JournalPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Journal Page'),
+    return Center(
+      child: Text('Bisher keine Pflanzen im Journal', style: TextStyle(color: Theme.of(context).colorScheme.onBackground)),
     );
   }
 }

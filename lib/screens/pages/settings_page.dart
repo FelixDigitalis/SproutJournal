@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../themes/app_colors.dart';
 
 class SettingsMenu extends StatefulWidget {
   const SettingsMenu({super.key});
@@ -13,10 +14,10 @@ class _SettingsMenuState extends State<SettingsMenu> {
       appBar: AppBar(
         title: const Text('Einstellungen',
             style: TextStyle(
-                color: Colors.white,
+                color: AppColors.secondaryTextColor,
                 fontSize: 24,
                 fontWeight: FontWeight.w600)),
-        backgroundColor: Colors.green[800],
+        backgroundColor: AppColors.primaryColor,
       ),
       body: ListView(
         children: [

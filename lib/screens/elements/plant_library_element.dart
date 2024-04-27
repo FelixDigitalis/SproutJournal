@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprout_journal/plants/plant_model.dart';
 import '../pages/plant_description_page.dart';
 
+
 class PlantLibElement extends StatelessWidget {
   final String standardPlantImage = "./assets/images/standard_plant.png";
   final Plant plant;
@@ -26,8 +27,8 @@ class PlantLibElement extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: Colors.lightGreen,
-          borderRadius: BorderRadius.circular(8), // Applies to all corners
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(8), 
         ),
         child: Stack(
           children: <Widget>[
@@ -43,7 +44,7 @@ class PlantLibElement extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Text(
                   name,
-                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSecondary),
                 ),
               ],
             ),
@@ -58,7 +59,7 @@ class PlantLibElement extends StatelessWidget {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.add, size: 30, color: Colors.green),
+                  child: Icon(Icons.add, size: 30, color: Theme.of(context).colorScheme.primary),
                 ),
               ),
             ),
