@@ -30,7 +30,7 @@ class BottomBarElement extends StatelessWidget {
         ),
       ],
       currentIndex: selectedIndex,
-      selectedItemColor: Colors.green[800],
+      selectedItemColor: Theme.of(context).colorScheme.primary,
       onTap: onItemTapped,
     );
   }

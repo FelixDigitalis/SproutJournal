@@ -1,4 +1,4 @@
-import 'plant_model.dart';
+import '../models/plant_model.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 

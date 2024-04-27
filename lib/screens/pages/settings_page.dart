@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../themes/app_colors.dart';
 
 class SettingsMenu extends StatefulWidget {
   const SettingsMenu({super.key});
@@ -14,17 +13,16 @@ class _SettingsMenuState extends State<SettingsMenu> {
       appBar: AppBar(
         title: const Text('Einstellungen',
             style: TextStyle(
-                color: AppColors.secondaryTextColor,
                 fontSize: 24,
                 fontWeight: FontWeight.w600)),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: ListView(
         children: [
           ListTile(
-            title: const Text('Über'),
-            subtitle: const Text(
-                'SproutJournal, ein App Projekt von Felix im Sommersemester 2024'),
+            title: Text('Über', style: TextStyle(color: Theme.of(context).colorScheme.onBackground),),
+            subtitle: Text(
+                'SproutJournal, ein App Projekt von Felix im Sommersemester 2024', style: TextStyle(color: Theme.of(context).colorScheme.onBackground),),
             onTap: () {},
           ),
         ],

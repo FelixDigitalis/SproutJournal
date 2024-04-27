@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sprout_journal/plants/plant_model.dart';
+import 'package:sprout_journal/models/plant_model.dart';
 import '../pages/plant_description_page.dart';
 
 

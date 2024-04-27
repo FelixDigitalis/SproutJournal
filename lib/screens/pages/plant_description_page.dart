@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../plants/plant_model.dart';
+import '../../models/plant_model.dart';
+import '../../services/inventory_manager.dart';
 
 class PlantDescriptionPage extends StatelessWidget {
   final Plant plant;
@@ -53,7 +54,8 @@ class PlantDescriptionPage extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10, bottom: 10),
               child: RawMaterialButton(
                 onPressed: () {
-                  // TODO: Implement the functionality to add this plant to the journal
+                  // TODO:
+                  //InventoryManager.instance.insert(1);
                 },
                 elevation: 2.0,
                 fillColor: Theme.of(context).colorScheme.secondary,

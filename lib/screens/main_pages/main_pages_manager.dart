@@ -31,13 +31,12 @@ class _PageManagerState extends State<PageManager> {
       appBar: AppBar(
         title: const Text('SproutJournal 🌱',
             style: TextStyle(
-                color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
               // Navigate to the SettingsMenu page when the icon is tapped

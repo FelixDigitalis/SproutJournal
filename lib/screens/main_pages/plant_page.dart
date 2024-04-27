@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/elements/plant_library_element.dart';
-import '../../plants/plant_manager.dart';
-import '../../plants/plant_model.dart';
+import '../../services/plant_manager.dart';
+import '../../models/plant_model.dart';
 
 class PlantPage extends StatefulWidget {
   const PlantPage({super.key});

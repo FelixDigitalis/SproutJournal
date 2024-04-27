@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
-import 'package:logger/logger.dart';
+import './services/log.dart';
 
 
-void main() {
-  Logger logger = Logger(
-    printer: PrettyPrinter(),
-  );
-
-  // Logger loggerNoStack = Logger(
-  //   printer: PrettyPrinter(methodCount: 0),
-  // );
-
-  logger.i("Main started");
+void main() async {
+  Log().i("Main started");
 
   runApp(const App());
 }
