@@ -1,5 +1,3 @@
-// plants from https://media.kiepenkerl.de/medienarchiv/die-besten-aussaat-tipps/6/ with little chacges from own experience
-
 class Plant {
   final int id;
   final String germanName;
