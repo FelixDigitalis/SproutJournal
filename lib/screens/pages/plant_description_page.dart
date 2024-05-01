@@ -30,19 +30,27 @@ class PlantDescriptionPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                       'Ausaat: ${_formatSowingRange(plant.minSowBy, plant.maxSowBy)}',
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onBackground)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.onBackground)),
                   const SizedBox(height: 10),
                   Text(
                       'Saattiefe: ${_formatDepthRange(plant.sowingDepthMin, plant.sowingDepthMax)}',
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onBackground)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.onBackground)),
                   const SizedBox(height: 10),
                   Text(
                       'Keimtemperatur: ${_formatTemperatureRange(plant.germinationTemperatureMin, plant.germinationTemperatureMax)}',
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onBackground)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.onBackground)),
                   const SizedBox(height: 10),
                   Text(
                       'Keimdauer: ${_formatDurationRange(plant.germinationDurationMin, plant.germinationDurationMax)}',
-                      style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onBackground)),
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.onBackground)),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -53,10 +61,7 @@ class PlantDescriptionPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(right: 10, bottom: 10),
               child: RawMaterialButton(
-                onPressed: () {
-                  // TODO:
-                  //InventoryManager.instance.insert(1);
-                },
+                onPressed: () => _showAddPlantDialog(context),
                 elevation: 2.0,
                 fillColor: Theme.of(context).colorScheme.secondary,
                 padding: const EdgeInsets.all(15.0),
@@ -73,6 +78,35 @@ class PlantDescriptionPage extends StatelessWidget {
       ),
     );
   }
+
+  
+  void _showAddPlantDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Pflanze hinzufügen", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+          content:  Text("Möchten Sie diese Pflanze zum Inventar hinzufügen?", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Abbrechen'),
+            ),
+            TextButton(
+              onPressed: () {
+                InventoryManager.instance.addPlantToInventory(plant.id, "foo");
+                Navigator.of(context).pop(); 
+              },
+              child: const Text('Ja'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   String _formatSowingRange(int minMonth, int maxMonth) {
     if (minMonth == maxMonth) {

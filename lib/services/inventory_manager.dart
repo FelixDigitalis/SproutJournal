@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../services/log.dart';
 
 class InventoryManager {
   // database name and cols
@@ -9,13 +11,6 @@ class InventoryManager {
   static const _databaseVersion = 1;
   static const table = "inventory";
   static const id = 1;
-
-  // columns
-  static const col1 = "plantID";
-  static const col2 = "customDescription";
-  static const col3 = "plantingDate";
-
-  bool inited = false;
 
   // Singleton -> only one database per app
 
@@ -30,34 +25,48 @@ class InventoryManager {
       return _database!;
     } else {
       // creates and opens OR opens
-      Directory documentsDirectory = await getApplicationDocumentsDirectory();
-      String path = join(documentsDirectory.path, _databaseName);
-      _database = await openDatabase(path,
-          version: _databaseVersion, onCreate: _onCreate);
-      return _database!;
+      try {
+        Directory documentsDirectory = await getApplicationDocumentsDirectory();
+        String path = join(documentsDirectory.path, _databaseName);
+        _database = await openDatabase(path,
+            version: _databaseVersion, onCreate: _onCreate);
+        return _database!;
+      } catch (e) {
+        Log().e(e.toString());
+        throw Exception('Database could not be initialized.');
+      }
     }
   }
 
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-          CREATE $table table_name (
+          CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 
-                $col1 INTEGER NOT NULL,
-                $col2 TEXT DEFAULT NULL,
-                $col3 DATE DEFAULT (DATE('now'))
+                plantID INTEGER NOT NULL,
+                description TEXT DEFAULT NULL,
+                plantingDate DATE DEFAULT (DATE('now'))
           )
           ''');
   }
 
-  // TODO: implement tho functions
-  Future<int> insert(Map<String, dynamic> row) async {
-    Database db = await instance.database;
+  Future<int> addPlantToInventory(int plantID, String description) async {
+    final db = await instance.database;
+    final row = {
+      'plantID': plantID,
+      'description': description,
+    };
     return await db.insert(table, row);
   }
 
-  Future<int> delete(int id) async {
-    Database db = await instance.database;
-    return await db.delete(table);
+  Future<List<Map<String, dynamic>>> getAllPlants() async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> plants =
+        await db.query(table, orderBy: 'plantingDate ASC');
+    return plants;
   }
+  // Future<int> delete(int id) async {
+  //   Database db = await instance.database;
+  //   return await db.delete(table);
+  // }
 }

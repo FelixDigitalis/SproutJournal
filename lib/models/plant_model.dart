@@ -1,6 +1,7 @@
 // plants from https://media.kiepenkerl.de/medienarchiv/die-besten-aussaat-tipps/6/ with little chacges from own experience
 
 class Plant {
+  final int id;
   final String germanName;
   final int germinationTemperatureMin;
   final int germinationTemperatureMax;
@@ -12,6 +13,7 @@ class Plant {
   final int maxSowBy;
 
   Plant({
+    required this.id,
     required this.germanName,
     required this.germinationTemperatureMin,
     required this.germinationTemperatureMax,
@@ -25,6 +27,7 @@ class Plant {
 
   factory Plant.fromJson(Map<String, dynamic> json) {
     return Plant(
+      id: json['id'],
       germanName: json['GermanName'],
       germinationTemperatureMin: json['GerminationTemperatureMin'],
       germinationTemperatureMax: json['GerminationTemperatureMax'],
