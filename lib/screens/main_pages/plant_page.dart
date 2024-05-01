@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sprout_journal/screens/elements/plant_library_element.dart';
-import '../../services/plant_manager.dart';
+import 'package:sprout_journal/screens/elements/library_plant_element.dart';
+import '../../services/json_manager.dart';
 import '../../models/plant_model.dart';
 
 class PlantPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _PlantPageState extends State<PlantPage> {
   @override
   void initState() {
     super.initState();
-    _plants = PlantManager().loadPlants(); // Load plants on init
+    _plants = JsonManager().loadPlants(); // Load plants on init
   }
 
   @override
@@ -35,7 +35,7 @@ class _PlantPageState extends State<PlantPage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   Plant plant = snapshot.data![index];
-                  return PlantLibElement(plant: plant);
+                  return LibraryPlantElement(plant: plant);
                 },
               );
             }

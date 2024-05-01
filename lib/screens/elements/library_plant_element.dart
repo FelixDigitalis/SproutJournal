@@ -3,12 +3,12 @@ import 'package:sprout_journal/models/plant_model.dart';
 import '../pages/plant_description_page.dart';
 
 
-class PlantLibElement extends StatelessWidget {
+class LibraryPlantElement extends StatelessWidget {
   final String standardPlantImage = "./assets/images/standard_plant.png";
   final Plant plant;
   final String name;
 
-  PlantLibElement({
+  LibraryPlantElement({
     super.key,
     required this.plant,
   }) : name = plant.germanName;
