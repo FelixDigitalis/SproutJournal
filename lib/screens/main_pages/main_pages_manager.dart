@@ -3,7 +3,7 @@ import '../elements/bottom_bar_element.dart';
 import '../pages/settings_page.dart';
 import 'friends_page.dart';
 import 'journal_page.dart';
-import 'plant_page.dart';
+import 'library_page.dart';
 
 class PageManager extends StatefulWidget {
   const PageManager({super.key});

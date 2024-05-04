@@ -31,7 +31,11 @@ class _PlantPageState extends State<PlantPage> {
                 child: Text('Error: ${snapshot.error}'),
               );
             } else if (snapshot.hasData) {
-              return ListView.builder(
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // Two items per row
+                  childAspectRatio: 1.0, // Makes each item a square
+                ),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   Plant plant = snapshot.data![index];

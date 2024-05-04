@@ -1,6 +1,7 @@
 class Plant {
   final int id;
   final String germanName;
+  final String englishName;
   final int germinationTemperatureMin;
   final int germinationTemperatureMax;
   final int germinationDurationMin;
@@ -13,6 +14,7 @@ class Plant {
   Plant({
     required this.id,
     required this.germanName,
+    required this.englishName,
     required this.germinationTemperatureMin,
     required this.germinationTemperatureMax,
     required this.germinationDurationMin,
@@ -27,6 +29,7 @@ class Plant {
     return Plant(
       id: json['id'],
       germanName: json['GermanName'],
+      englishName: json['EnglishName'],
       germinationTemperatureMin: json['GerminationTemperatureMin'],
       germinationTemperatureMax: json['GerminationTemperatureMax'],
       germinationDurationMin: json['GerminationDurationMin'],

@@ -2,6 +2,7 @@
     "Lettuce": {
         "id" : 1,
         "GermanName": "Salat",
+        "EnglishName": "Lettuce",
         "GerminationTemperatureMin": 5,
         "GerminationTemperatureMax": 10,
         "GerminationDurationMin": 8,
@@ -14,6 +15,7 @@
     "Cucumber": {
         "id" : 2,
         "GermanName": "Gurke",
+        "EnglishName": "Cucumber",
         "GerminationTemperatureMin": 20,
         "GerminationTemperatureMax": 25,
         "GerminationDurationMin": 10,
@@ -23,9 +25,10 @@
         "MinSowBy": 4,
         "MaxSowBy": 6
     },
-    "Pumpkins/Zucchini": {
+    "Pumpkin": {
         "id" : 3,
-        "GermanName": "Kürbis/Zucchini",
+        "GermanName": "Kürbis",
+        "EnglishName": "Pumpkin",
         "GerminationTemperatureMin": 18,
         "GerminationTemperatureMax": 22,
         "GerminationDurationMin": 8,
@@ -38,6 +41,7 @@
     "Tomato": {
         "id" : 4,
         "GermanName": "Tomate",
+        "EnglishName": "Tomato",
         "GerminationTemperatureMin": 20,
         "GerminationTemperatureMax": 25,
         "GerminationDurationMin": 10,
@@ -50,6 +54,7 @@
     "Pepper": {
         "id" : 5,
         "GermanName": "Paprika",
+        "EnglishName": "Pepper",
         "GerminationTemperatureMin": 20,
         "GerminationTemperatureMax": 25,
         "GerminationDurationMin": 10,

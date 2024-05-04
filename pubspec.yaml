@@ -13,8 +13,7 @@ dependencies:
   logger: ^2.2.0
   sqflite: any
   path_provider: ^2.0.8
-  path: ^1.9.0
-  
+  path: ^1.9.0  
 
 dev_dependencies:
   flutter_test:
@@ -25,8 +24,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/icon/
     - assets/plants.json
     - assets/images/standard_plant.png
+    - assets/images/plants/
 
 flutter_launcher_icons:
   android : "launcher_icon" 

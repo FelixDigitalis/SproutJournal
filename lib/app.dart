@@ -16,7 +16,7 @@ class App extends StatelessWidget {
           brightness: Brightness.light,
           primary: Color.fromRGBO(46, 125, 50, 1),
           onPrimary: Colors.white,
-          secondary: Colors.lightGreen,
+          secondary: Color.fromRGBO(194, 222, 162, 1),
           onSecondary: Colors.black,
           error:  Colors.red,
           onError: Colors.white,

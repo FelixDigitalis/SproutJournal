@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sprout_journal/models/plant_model.dart';
 import '../pages/plant_description_page.dart';
 
-
 class LibraryPlantElement extends StatelessWidget {
-  final String standardPlantImage = "./assets/images/standard_plant.png";
   final Plant plant;
   final String name;
 
@@ -15,6 +13,10 @@ class LibraryPlantElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Construct the image path dynamically based on the plant's English name
+    String imagePath =
+        "assets/images/plants/${plant.englishName.toLowerCase()}.png";
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -25,41 +27,38 @@ class LibraryPlantElement extends StatelessWidget {
         );
       },
       child: Container(
+        height: 200, 
         margin: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(8), 
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, 
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                ClipRect(
-                  child: Align(
-                    alignment: Alignment.center,
-                    heightFactor: 1,
-                    child: Image.asset(standardPlantImage),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.contain, 
+                    ),
                   ),
                 ),
-                const SizedBox(height: 8.0),
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onSecondary),
-                ),
-              ],
+              ),
             ),
-            Positioned(
-              right: 10,
-              top: 10,
-              child: InkWell(
-                // TODO: onTap: add to journal
-                child: Container(
-                  padding: const EdgeInsets.all(2.0),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.add, size: 30, color: Theme.of(context).colorScheme.primary),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSecondary,
                 ),
               ),
             ),
