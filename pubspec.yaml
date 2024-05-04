@@ -24,7 +24,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/icon/
     - assets/plants.json
     - assets/images/standard_plant.png
     - assets/images/plants/

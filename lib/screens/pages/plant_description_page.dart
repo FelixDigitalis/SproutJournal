@@ -23,81 +23,130 @@ class PlantDescriptionPage extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const SizedBox(height: 10),
-                  Text(
-                      'Ausaat: ${_formatSowingRange(plant.minSowBy, plant.maxSowBy)}',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground)),
-                  const SizedBox(height: 10),
-                  Text(
-                      'Saattiefe: ${_formatDepthRange(plant.sowingDepthMin, plant.sowingDepthMax)}',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground)),
-                  const SizedBox(height: 10),
-                  Text(
-                      'Keimtemperatur: ${_formatTemperatureRange(plant.germinationTemperatureMin, plant.germinationTemperatureMax)}',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground)),
-                  const SizedBox(height: 10),
-                  Text(
-                      'Keimdauer: ${_formatDurationRange(plant.germinationDurationMin, plant.germinationDurationMax)}',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.onBackground)),
-                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.all(
+                        16), // Margin around the container for better spacing from other elements
+                    padding: const EdgeInsets.all(
+                        8), // Padding inside the container to create a framed effect
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                          15), // Rounded corners for the outer container
+                      color: Theme.of(context)
+                          .colorScheme
+                          .surface, // Background color from the theme for the frame
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black
+                              .withOpacity(0.1), // Shadow for 3D effect
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          10), // Slightly less rounded corners for the image itself
+                      child: Image.asset(
+                        'assets/images/plants/${plant.englishName.toLowerCase()}.png',
+                        fit: BoxFit
+                            .contain, // Ensures the image is scaled properly within the bounds
+                        height: 200, // Fixed height for the image
+                        width: double
+                            .infinity, // Takes full width available within the padding and margin
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _buildDetailCard(
+                            'Ausaat',
+                            _formatSowingRange(plant.minSowBy, plant.maxSowBy),
+                            context),
+                        _buildDetailCard(
+                            'Saattiefe',
+                            _formatDepthRange(
+                                plant.sowingDepthMin, plant.sowingDepthMax),
+                            context),
+                        _buildDetailCard(
+                            'Keimtemperatur',
+                            _formatTemperatureRange(
+                                plant.germinationTemperatureMin,
+                                plant.germinationTemperatureMax),
+                            context),
+                        _buildDetailCard(
+                            'Keimdauer',
+                            _formatDurationRange(plant.germinationDurationMin,
+                                plant.germinationDurationMax),
+                            context),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10, bottom: 10),
-              child: RawMaterialButton(
-                onPressed: () => _showAddPlantDialog(context),
-                elevation: 2.0,
-                fillColor: Theme.of(context).colorScheme.secondary,
-                padding: const EdgeInsets.all(15.0),
-                shape: const CircleBorder(),
-                child: const Icon(
-                  Icons.add,
-                  size: 35.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          _buildAddButton(context),
         ],
       ),
     );
   }
 
-  
+  Widget _buildDetailCard(String title, String value, BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      elevation: 4,
+      child: ListTile(
+        title: Text(title,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSecondary)),
+        subtitle: Text(value,
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+      ),
+    );
+  }
+
+  Align _buildAddButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: FloatingActionButton(
+          onPressed: () => _showAddPlantDialog(context),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          child: const Icon(Icons.add, size: 24),
+        ),
+      ),
+    );
+  }
+
   void _showAddPlantDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Pflanze hinzufügen", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
-          content:  Text("Möchten Sie diese Pflanze zum Inventar hinzufügen?", style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+          title: Text("Pflanze hinzufügen",
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
+          content: Text("Möchten Sie diese Pflanze zum Inventar hinzufügen?",
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary)),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Abbrechen'),
             ),
             TextButton(
               onPressed: () {
                 InventoryManager.instance.addPlantToInventory(plant.id, "foo");
-                Navigator.of(context).pop(); 
+                Navigator.of(context).pop();
               },
               child: const Text('Ja'),
             ),
@@ -106,7 +155,6 @@ class PlantDescriptionPage extends StatelessWidget {
       },
     );
   }
-
 
   String _formatSowingRange(int minMonth, int maxMonth) {
     if (minMonth == maxMonth) {
