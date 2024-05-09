@@ -32,7 +32,7 @@ class _PlantPageState extends State<PlantPage> {
               );
             } else if (snapshot.hasData) {
               return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // Two items per row
                   childAspectRatio: 1.0, // Makes each item a square
                 ),
