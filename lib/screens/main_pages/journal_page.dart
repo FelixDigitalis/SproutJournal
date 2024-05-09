@@ -33,13 +33,13 @@ class _JournalPageState extends State<JournalPage> {
             itemCount: plants.length,
             itemBuilder: (context, index) {
               var plantId = plants[index]['plantID'];
-              String  plantDate = plants[index]['plantingDate'];
+              Map<String, dynamic> plantFromManager = plants[index];
               return FutureBuilder<Plant?>(
                 future: JsonManager().getPlantById(plantId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData && snapshot.data != null) {
-                      return JournalPlantElement(plant: snapshot.data!, plantDate: plantDate,);
+                      return JournalPlantElement(plant: snapshot.data!, plantFromManager: plantFromManager,);
                     } else {
                       return const ListTile(
                         title: Text('Plant not found'),

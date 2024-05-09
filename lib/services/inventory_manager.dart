@@ -59,7 +59,7 @@ class InventoryManager {
     return await db.insert(table, row);
   }
 
-    Future<List<Map<String, dynamic>>> getAllPlants() async {
+  Future<List<Map<String, dynamic>>> getAllPlants() async {
     final db = await instance.database;
     final List<Map<String, dynamic>> plants = await db.rawQuery('''
       SELECT 

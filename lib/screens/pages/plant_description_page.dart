@@ -28,35 +28,35 @@ class PlantDescriptionPage extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     margin: const EdgeInsets.all(
-                        16), // Margin around the container for better spacing from other elements
+                        16),
                     padding: const EdgeInsets.all(
-                        8), // Padding inside the container to create a framed effect
+                        8), 
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                          15), // Rounded corners for the outer container
+                          15), 
                       color: Theme.of(context)
                           .colorScheme
-                          .surface, // Background color from the theme for the frame
+                          .surface, 
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black
-                              .withOpacity(0.1), // Shadow for 3D effect
+                              .withOpacity(0.1), 
                           spreadRadius: 1,
                           blurRadius: 5,
-                          offset: const Offset(0, 3), // changes position of shadow
+                          offset: const Offset(0, 3), 
                         ),
                       ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(
-                          10), // Slightly less rounded corners for the image itself
+                          10), 
                       child: Image.asset(
                         'assets/images/plants/${plant.englishName.toLowerCase()}.png',
                         fit: BoxFit
-                            .contain, // Ensures the image is scaled properly within the bounds
-                        height: 200, // Fixed height for the image
+                            .contain,
+                        height: 200, 
                         width: double
-                            .infinity, // Takes full width available within the padding and margin
+                            .infinity, 
                       ),
                     ),
                   ),

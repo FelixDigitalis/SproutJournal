@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/models/plant_model.dart';
-import '../pages/plant_description_page.dart';
+import '../pages/plant_journal_page.dart';
 
 class JournalPlantElement extends StatelessWidget {
   final Plant plant;
-  final String plantDate;
+  final Map<String, dynamic> plantFromManager;
 
   const JournalPlantElement({
     super.key,
     required this.plant,
-    required this.plantDate,
+    required this.plantFromManager,
   });
 
   @override
@@ -21,7 +21,7 @@ class JournalPlantElement extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlantDescriptionPage(plant: plant),
+            builder: (context) => PlantJournalPage(plant: plant, plantFromManager: plantFromManager),
           ),
         );
       },
@@ -57,16 +57,16 @@ class JournalPlantElement extends StatelessWidget {
                         Text(
                           plant.germanName,
                           style: TextStyle(
-                            fontSize: 16.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onSecondary,
                           ),
                         ),
                         const SizedBox(height: 4.0),
                         Text(
-                          'gepflanzt am: $plantDate',
+                          'gepflanzt am: ${plantFromManager['plantingDate']}',
                           style: TextStyle(
-                            fontSize: 14.0,
+                            fontSize: 18.0,
                             color: Theme.of(context).colorScheme.onSecondary,
                           ),
                         ),
