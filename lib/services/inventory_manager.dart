@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'database_manager.dart';
+import 'log.dart';
 
 class InventoryManager extends DatabaseManager {
   static const table = "inventory";
@@ -11,6 +12,8 @@ class InventoryManager extends DatabaseManager {
 
   @override
   Future<void> onCreate(Database db, int version) async {
+    //FIXME: Test Code
+    Log().i("I am DB: ${identityHashCode(db)}");
     await db.execute('''
           CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 
@@ -28,6 +31,12 @@ class InventoryManager extends DatabaseManager {
       'description': description,
     };
     return await db.insert(table, row);
+  }
+
+  //FIXME: Test Code
+  Future<void> test() async {
+    final db = await instance.database;
+    Log().i("I am DB: ${identityHashCode(db)}");
   }
 
   Future<List<Map<String, dynamic>>> getAllPlants() async {
