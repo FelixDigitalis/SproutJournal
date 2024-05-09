@@ -1,45 +1,16 @@
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import '../services/log.dart';
+import 'database_manager.dart';
 
-class InventoryManager {
-  // database name and cols
-  static const _databaseName = "sproutJournalDB.db";
-  static const _databaseVersion = 1;
+class InventoryManager extends DatabaseManager {
   static const table = "inventory";
-  static const id = 1;
 
-  // Singleton -> only one database per app
-
-  // private constructor -> no other class can create an instance
   InventoryManager._privateConstructor();
   static final InventoryManager instance =
       InventoryManager._privateConstructor();
-  static Database? _database;
 
-  Future<Database> get database async {
-    if (_database != null) {
-      return _database!;
-    } else {
-      // creates and opens OR opens
-      try {
-        Directory documentsDirectory = await getApplicationDocumentsDirectory();
-        String path = join(documentsDirectory.path, _databaseName);
-        _database = await openDatabase(path,
-            version: _databaseVersion, onCreate: _onCreate);
-        return _database!;
-      } catch (e) {
-        Log().e(e.toString());
-        throw Exception('Database could not be initialized.');
-      }
-    }
-  }
-
-  // SQL code to create the database table
-  Future _onCreate(Database db, int version) async {
+  @override
+  Future<void> onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 
