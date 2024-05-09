@@ -31,7 +31,7 @@ class Log {
     _logger.d(message);
   }
 
-  void v(String message) {
-    _logger.v(message);
+  void t(String message) {
+    _logger.t(message);
   }
 }

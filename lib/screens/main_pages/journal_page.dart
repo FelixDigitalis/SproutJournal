@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../services/inventory_manager.dart';
-import '../../services/journal_entry_manager.dart';
 import '../../models/plant_model.dart';
 import '../../services/json_manager.dart';
 import '../../services/log.dart';
@@ -10,14 +9,12 @@ class JournalPage extends StatefulWidget {
   const JournalPage({super.key});
 
   @override
-  _JournalPageState createState() => _JournalPageState();
+  JournalPageState createState() => JournalPageState();
 }
 
-class _JournalPageState extends State<JournalPage> {
+class JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
-    InventoryManager.instance.test();
-    JournalEntryManager.instance.test();
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: fetchPlants(), // Directly calling fetchPlants() here
       builder: (context, snapshot) {
@@ -73,9 +70,6 @@ class _JournalPageState extends State<JournalPage> {
 
   Future<List<Map<String, dynamic>>> fetchPlants() async {
     try {
-      //FIXME: Test Code
-      await InventoryManager.instance.test();
-      await JournalEntryManager.instance.test();
       List<Map<String, dynamic>> plants =
           await InventoryManager.instance.getAllPlants();
       return plants;

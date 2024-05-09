@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'database_manager.dart';
-import 'log.dart';
+// import 'log.dart';
 
 class JournalEntryManager extends DatabaseManager {
   static const table = "journal_entries";
@@ -13,8 +13,6 @@ class JournalEntryManager extends DatabaseManager {
 
   @override
   Future<void> onCreate(Database db, int version) async {
-    //FIXME: Test Code
-    Log().i("I am DB: ${identityHashCode(db)}");
     await db.execute('''
           CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 
@@ -25,12 +23,6 @@ class JournalEntryManager extends DatabaseManager {
                 FOREIGN KEY (journalManagerID) REFERENCES $journalManagerTable (id) ON DELETE CASCADE
           )
           ''');
-  }
-
-  //FIXME: Test Code
-  Future<void> test() async {
-    final db = await instance.database;
-    Log().i("I am DB: ${identityHashCode(db)}");
   }
 
   Future<int> addJournalEntry(int journalManagerID, String text,
