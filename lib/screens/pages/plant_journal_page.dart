@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/plant_model.dart';
 import '../../services/inventory_manager.dart';
+import '../../utils/log.dart';
+
 
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
@@ -25,12 +27,17 @@ class PlantJournalPageState extends State<PlantJournalPage> {
 
   @override
   void initState() {
-    super.initState();
-    _dateController = TextEditingController(
-      text: widget.plantFromManager['plantingDate'],
-    );
-    _postController = TextEditingController();
-    _plantData = widget.plantFromManager;
+    try {
+      super.initState();
+    } catch (e) {
+      Log().e(e.toString());
+    } finally {
+      _dateController = TextEditingController(
+        text: widget.plantFromManager['plantingDate'],
+      );
+      _postController = TextEditingController();
+      _plantData = widget.plantFromManager;
+    }
   }
 
   @override
@@ -51,36 +58,10 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     if (picked != null) {
       final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
 
-      await InventoryManager.instance
-          .updatePlantingDate(widget.plant.id, formattedDate);
+      int state = await InventoryManager.instance
+          .updatePlantingDate(widget.plantFromManager['plantID'], formattedDate);
 
-      await _reloadState();
-      setState(() {
-        _isUpdated = true;
-      });
-    }
-  }
-
-  Future<void> _reloadState() async {
-    final updatedPlantData = await InventoryManager.instance.getAllPlants();
-    final newData =
-        updatedPlantData.firstWhere((plant) => plant['id'] == widget.plant.id);
-
-    setState(() {
-      _plantData = newData;
-      _dateController.text = _plantData['plantingDate'];
-    });
-  }
-
-  Future<void> _addPost() async {
-    final postContent = _postController.text.trim();
-    if (postContent.isNotEmpty) {
-      //TODO: Add post to the database
-
-      _postController.clear();
-      setState(() {
-        _isUpdated = true;
-      });
+      Log().e(state.toString());
     }
   }
 
@@ -98,10 +79,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _reloadState,
-          ),
+          IconButton(icon: const Icon(Icons.refresh), onPressed: () {}),
         ],
       ),
       body: Container(
@@ -147,7 +125,6 @@ class PlantJournalPageState extends State<PlantJournalPage> {
                           ),
                         ),
                         readOnly: true,
-                        onTap: () => _selectDate(context),
                         style: TextStyle(
                           fontSize: 16,
                           color: Theme.of(context).colorScheme.onSecondary,
@@ -161,7 +138,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
             const SizedBox(height: 20),
             Expanded(
               child: Container(
-                  //TODO: Add posts here
+                  // TODO: Add posts here
                   ),
             ),
             Padding(
@@ -189,7 +166,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
                   ),
                   const SizedBox(width: 10),
                   FloatingActionButton(
-                    onPressed: _addPost,
+                    onPressed: () {},
                     child: const Icon(Icons.send),
                   ),
                 ],

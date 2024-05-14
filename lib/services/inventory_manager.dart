@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:sprout_journal/utils/log.dart';
 import 'package:sqflite/sqflite.dart';
 import 'database_manager.dart';
 // import 'log.dart';
@@ -49,6 +50,7 @@ class InventoryManager extends DatabaseManager {
 
   Future<int> updatePlantingDate(int id, String newDate) async {
     final db = await instance.database;
+    Log().i('Updating planting date for plant with id: $id');
     final row = {
       'plantingDate': newDate,
     };

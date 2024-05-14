@@ -3,14 +3,14 @@ import 'package:sprout_journal/screens/elements/library_plant_element.dart';
 import '../../services/json_manager.dart';
 import '../../models/plant_model.dart';
 
-class PlantPage extends StatefulWidget {
-  const PlantPage({super.key});
+class PlantFeed extends StatefulWidget {
+  const PlantFeed({super.key});
 
   @override
-  State<PlantPage> createState() => _PlantPageState();
+  State<PlantFeed> createState() => _PlantFeedState();
 }
 
-class _PlantPageState extends State<PlantPage> {
+class _PlantFeedState extends State<PlantFeed> {
   late Future<List<Plant>> _plants;
 
   @override

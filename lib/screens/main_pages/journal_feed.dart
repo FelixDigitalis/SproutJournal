@@ -5,14 +5,14 @@ import '../../services/json_manager.dart';
 import '../../utils/log.dart';
 import '../elements/journal_plant_element.dart';
 
-class JournalPage extends StatefulWidget {
-  const JournalPage({super.key});
+class JournalFeed extends StatefulWidget {
+  const JournalFeed({super.key});
 
   @override
-  JournalPageState createState() => JournalPageState();
+  JournalFeedState createState() => JournalFeedState();
 }
 
-class JournalPageState extends State<JournalPage> {
+class JournalFeedState extends State<JournalFeed> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(

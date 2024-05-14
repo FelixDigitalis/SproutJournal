@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../elements/bottom_bar_element.dart';
 import '../pages/settings_page.dart';
 import 'friends_page.dart';
-import 'journal_page.dart';
-import 'library_page.dart';
+import 'journal_feed.dart';
+import 'library_feed.dart';
 
 class PageManager extends StatefulWidget {
   const PageManager({super.key});
@@ -15,8 +15,8 @@ class PageManager extends StatefulWidget {
 class _PageManagerState extends State<PageManager> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    const JournalPage(),
-    const PlantPage(),
+    const JournalFeed(),
+    const PlantFeed(),
     const FriendsPage(),
   ];
 
