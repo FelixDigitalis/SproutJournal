@@ -1,8 +1,7 @@
 import 'dart:async';
-import 'package:sprout_journal/utils/log.dart';
+// import 'package:sprout_journal/utils/log.dart';
 import 'package:sqflite/sqflite.dart';
 import 'database_manager.dart';
-// import 'log.dart';
 
 class InventoryManager extends DatabaseManager {
   static const table = "inventory";
@@ -43,14 +42,13 @@ class InventoryManager extends DatabaseManager {
       FROM 
         $table
       ORDER BY 
-        plantingDate ASC
+        plantingDate DESC
     ''');
     return plants;
   }
 
   Future<int> updatePlantingDate(int id, String newDate) async {
     final db = await instance.database;
-    Log().i('Updating planting date for plant with id: $id');
     final row = {
       'plantingDate': newDate,
     };

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/plant_model.dart';
 import '../../services/inventory_manager.dart';
-import '../../utils/log.dart';
-
+// import '../../utils/log.dart';
 
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
@@ -22,22 +21,18 @@ class PlantJournalPage extends StatefulWidget {
 class PlantJournalPageState extends State<PlantJournalPage> {
   late TextEditingController _dateController;
   late TextEditingController _postController;
-  late Map<String, dynamic> _plantData;
-  bool _isUpdated = false;
+  late String plantingDate;
+  late int plantID;
 
   @override
   void initState() {
-    try {
-      super.initState();
-    } catch (e) {
-      Log().e(e.toString());
-    } finally {
-      _dateController = TextEditingController(
-        text: widget.plantFromManager['plantingDate'],
-      );
-      _postController = TextEditingController();
-      _plantData = widget.plantFromManager;
-    }
+    super.initState();
+    _dateController = TextEditingController(
+      text: widget.plantFromManager['plantingDate'],
+    );
+    _postController = TextEditingController();
+    plantingDate = widget.plantFromManager['plantingDate'];
+    plantID = widget.plantFromManager['plantID'];
   }
 
   @override
@@ -47,21 +42,25 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _changeDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate:
-          DateTime.tryParse(_plantData['plantingDate']) ?? DateTime.now(),
-      firstDate: DateTime(2020),
+      initialDate: DateFormat('dd.MM.yyyy').parse(plantingDate),
+      firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
     if (picked != null) {
       final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
+      final displayDate = DateFormat('dd.MM.yyyy').format(picked);
+      plantingDate = displayDate;
+      int state = await InventoryManager.instance.updatePlantingDate(
+          plantID, formattedDate);
 
-      int state = await InventoryManager.instance
-          .updatePlantingDate(widget.plantFromManager['plantID'], formattedDate);
-
-      Log().e(state.toString());
+      if (state == 1) {
+        setState(() {
+          _dateController.text = displayDate;
+        });
+      }
     }
   }
 
@@ -79,7 +78,11 @@ class PlantJournalPageState extends State<PlantJournalPage> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
-          IconButton(icon: const Icon(Icons.refresh), onPressed: () {}),
+          IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                // TODO: Implement delete plant
+              }),
         ],
       ),
       body: Container(
@@ -120,7 +123,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
                           ),
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.calendar_today),
-                            onPressed: () => _selectDate(context),
+                            onPressed: () => _changeDate(context),
                             color: Theme.of(context).colorScheme.onSecondary,
                           ),
                         ),

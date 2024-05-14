@@ -70,6 +70,7 @@ class JournalFeedState extends State<JournalFeed> {
 
   Future<List<Map<String, dynamic>>> fetchPlants() async {
     try {
+      // await InventoryManager.instance.deleteAll();
       List<Map<String, dynamic>> plants =
           await InventoryManager.instance.getAllPlants();
       return plants;
