@@ -47,8 +47,32 @@ class InventoryManager extends DatabaseManager {
     return plants;
   }
 
-  // Future<int> delete(int id) async {
-  //   Database db = await instance.database;
-  //   return await db.delete(table);
-  // }
+  Future<int> updatePlantingDate(int id, String newDate) async {
+    final db = await instance.database;
+    final row = {
+      'plantingDate': newDate,
+    };
+    return await db.update(
+      table,
+      row,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deletePlant(int id) async {
+    final db = await instance.database;
+    return await db.delete(
+      table,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteAll() async {
+    final db = await instance.database;
+    return await db.delete(
+      table, 
+    );
+  }
 }

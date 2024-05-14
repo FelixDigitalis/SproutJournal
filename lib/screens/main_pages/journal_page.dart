@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../services/inventory_manager.dart';
 import '../../models/plant_model.dart';
 import '../../services/json_manager.dart';
-import '../../services/log.dart';
+import '../../utils/log.dart';
 import '../elements/journal_plant_element.dart';
 
 class JournalPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchPlants(), // Directly calling fetchPlants() here
+      future: fetchPlants(), 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

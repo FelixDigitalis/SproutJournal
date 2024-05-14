@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../models/plant_model.dart';
 import '../../services/inventory_manager.dart';
+// import '../../services/log.dart';
 
 class PlantDescriptionPage extends StatelessWidget {
   final Plant plant;
@@ -27,36 +29,27 @@ class PlantDescriptionPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Container(
-                    margin: const EdgeInsets.all(
-                        16),
-                    padding: const EdgeInsets.all(
-                        8), 
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          15), 
-                      color: Theme.of(context)
-                          .colorScheme
-                          .surface, 
+                      borderRadius: BorderRadius.circular(15),
+                      color: Theme.of(context).colorScheme.surface,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black
-                              .withOpacity(0.1), 
+                          color: Colors.black.withOpacity(0.1),
                           spreadRadius: 1,
                           blurRadius: 5,
-                          offset: const Offset(0, 3), 
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          10), 
+                      borderRadius: BorderRadius.circular(10),
                       child: Image.asset(
                         'assets/images/plants/${plant.englishName.toLowerCase()}.png',
-                        fit: BoxFit
-                            .contain,
-                        height: 200, 
-                        width: double
-                            .infinity, 
+                        fit: BoxFit.contain,
+                        height: 200,
+                        width: double.infinity,
                       ),
                     ),
                   ),
@@ -147,6 +140,11 @@ class PlantDescriptionPage extends StatelessWidget {
               onPressed: () {
                 InventoryManager.instance.addPlantToInventory(plant.id, "foo");
                 Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const PageManager(),
+                  ),
+                );
               },
               child: const Text('Ja'),
             ),

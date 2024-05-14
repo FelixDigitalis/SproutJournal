@@ -9,6 +9,7 @@ class PageManager extends StatefulWidget {
   const PageManager({super.key});
   @override
   State<PageManager> createState() => _PageManagerState();
+
 }
 
 class _PageManagerState extends State<PageManager> {
@@ -39,7 +40,6 @@ class _PageManagerState extends State<PageManager> {
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
-              // Navigate to the SettingsMenu page when the icon is tapped
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const SettingsMenu()),

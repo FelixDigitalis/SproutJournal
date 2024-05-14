@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/main_pages/main_pages_manager.dart';
-import './services/log.dart';
+import 'utils/log.dart';
 
 
 class App extends StatelessWidget {

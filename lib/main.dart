@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'app.dart';
-import './services/log.dart';
+import 'utils/log.dart';
 
 
 void main() async {
