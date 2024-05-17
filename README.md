@@ -11,3 +11,9 @@
     - Salad: https://commons.wikimedia.org/wiki/File:Romaine_lettuce.svg, https://commons.wikimedia.org/wiki/File:Iceberg_lettuce.svg
     - Pepper: https://commons.wikimedia.org/wiki/Category:SMART-Servier_Medical_Art_-_Food
 
+### TODO: Bugs
+
+- Samsung Phone
+    - in some plants date cannot be updated ->  app does not crash
+- Test device:
+    - Date does not update when you go back from journal to journal feed
