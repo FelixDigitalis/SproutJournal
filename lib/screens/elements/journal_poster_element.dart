@@ -1,17 +1,24 @@
-// import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import '../../services/journal_entry_manager.dart';
+import '../../utils/log.dart';
 
-class JournalPosterElement extends StatelessWidget {
+class JournalPosterElement extends StatefulWidget {
   final TextEditingController postController;
   final int plantID;
+  final VoidCallback fetchJournalEntries;
 
   const JournalPosterElement({
     super.key,
     required this.postController,
     required this.plantID,
+    required this.fetchJournalEntries,
   });
 
+  @override
+  JournalPosterElementState createState() => JournalPosterElementState();
+}
+
+class JournalPosterElementState extends State<JournalPosterElement> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +27,7 @@ class JournalPosterElement extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-              controller: postController,
+              controller: widget.postController,
               decoration: InputDecoration(
                 labelText: 'Neuer Journal Eintrag',
                 labelStyle: TextStyle(
@@ -52,12 +59,14 @@ class JournalPosterElement extends StatelessWidget {
   }
 
   Future<void> _addJournalEntry() async {
-    if (postController.text.isNotEmpty) {
+    Log().i('Adding journal entry');
+    if (widget.postController.text.isNotEmpty) {
       await JournalEntryManager.instance.addJournalEntry(
-        plantID,
-        postController.text,
+        widget.plantID,
+        widget.postController.text,
       );
-      postController.clear();
+      widget.postController.clear();
+      widget.fetchJournalEntries();
     }
   }
 }

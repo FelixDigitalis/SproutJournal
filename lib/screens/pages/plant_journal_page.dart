@@ -57,7 +57,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildPlantHeader(context),
-            JournalPosterElement(postController: _postController, plantID: plantID,),
+            JournalPosterElement(postController: _postController, plantID: plantID, fetchJournalEntries: _fetchJournalEntries,),
             const SizedBox(height: 20),
             _buildJournalEntriesList(),
           ],
@@ -146,10 +146,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
           return JournalEntryElement(
             entry: entry,
             onDelete: () {
-              setState(() {
-                JournalEntryManager.instance.deleteJournalEntry(entry['id']);
-                _journalEntries.removeAt(index);
-              });
+              _showDeleteDialog(context, entry, index);
             },
           );
         },
@@ -186,5 +183,35 @@ class PlantJournalPageState extends State<PlantJournalPage> {
         });
       }
     }
+  }
+
+  void _showDeleteDialog(BuildContext context, Map<String, dynamic> entry, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: Text('Eintrag löschen?', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Abbrechen', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  JournalEntryManager.instance.deleteJournalEntry(entry['id']);
+                  _journalEntries.removeAt(index);
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Löschen', style: TextStyle(color: Colors.red),),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

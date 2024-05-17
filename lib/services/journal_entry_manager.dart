@@ -48,7 +48,7 @@ class JournalEntryManager extends DatabaseManager {
       FROM 
         $table
       ORDER BY 
-        date ASC
+        date DESC
     ''');
     return entries;
   }
