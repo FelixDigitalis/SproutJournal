@@ -18,7 +18,7 @@ class JournalEntryManager extends DatabaseManager {
                 id INTEGER PRIMARY KEY, 
                 journalManagerID INTEGER NOT NULL,
                 text TEXT NOT NULL,
-                date DATE DEFAULT (DATE('now')),
+                date DATE DEFAULT (DATETIME('now')),
                 photoPath TEXT DEFAULT NULL,
                 FOREIGN KEY (journalManagerID) REFERENCES $journalManagerTable (id) ON DELETE CASCADE
           )
@@ -43,10 +43,12 @@ class JournalEntryManager extends DatabaseManager {
         id,
         journalManagerID,
         text,
-        strftime('%d.%m.%Y', date) AS date,
+        strftime('%d.%m.%Y %H:%M', date) AS date,
         photoPath
       FROM 
         $table
+      GROUP BY 
+        date
       ORDER BY 
         date DESC
     ''');
