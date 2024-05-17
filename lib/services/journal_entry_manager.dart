@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'database_manager.dart';
-// import 'log.dart';
+import 'package:sprout_journal/utils/log.dart';
 
 class JournalEntryManager extends DatabaseManager {
-  static const table = "journal_entries";
+  static const table = "journalEntries";
   static const journalManagerTable = "inventory";
 
   JournalEntryManager._privateConstructor();
   static final JournalEntryManager instance =
       JournalEntryManager._privateConstructor();
 
-  @override
-  Future<void> onCreate(Database db, int version) async {
+  Future<void> init(Database db, int version) async {
+    Log().i("Creating journalEntry table in database");
     await db.execute('''
           CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 

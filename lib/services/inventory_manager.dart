@@ -10,8 +10,7 @@ class InventoryManager extends DatabaseManager {
   static final InventoryManager instance =
       InventoryManager._privateConstructor();
 
-  @override
-  Future<void> onCreate(Database db, int version) async {
+  Future<void> init(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $table (
                 id INTEGER PRIMARY KEY, 

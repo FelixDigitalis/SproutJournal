@@ -3,6 +3,8 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'journal_entry_manager.dart';
+import 'inventory_manager.dart';
 import '../utils/log.dart';
 
 abstract class DatabaseManager {
@@ -27,5 +29,8 @@ abstract class DatabaseManager {
     }
   }
 
-  Future<void> onCreate(Database db, int version);
+  Future<void> onCreate(Database db, int version) async {
+    await JournalEntryManager.instance.init(db, version);
+    await InventoryManager.instance.init(db, version);
+  }
 }
