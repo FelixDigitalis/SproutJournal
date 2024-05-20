@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/models/plant_model.dart';
-import 'package:sprout_journal/services/inventory_manager.dart';
 import '../pages/plant_journal_page.dart';
 import 'package:sprout_journal/utils/log.dart';
 
@@ -66,11 +65,14 @@ class JournalFeedElementState extends State<JournalFeedElement> {
                   padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      imagePath,
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
+                    child: Padding(
+                      padding: const EdgeInsets.all(0), 
+                      child: Image.asset(
+                        imagePath,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -107,14 +109,5 @@ class JournalFeedElementState extends State<JournalFeedElement> {
         ),
       ),
     );
-  }
-
-  Future<void> _updateDate() async {
-    String newPlantingDate = await InventoryManager.instance
-        .getPlantingDate(widget.plantFromManager['id']);
-
-    setState(() {
-      _plantingDate = newPlantingDate;
-    });
   }
 }

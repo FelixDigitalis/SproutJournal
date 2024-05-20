@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../services/journal_entry_manager.dart';
 import '../../../utils/log.dart';
 
@@ -19,6 +20,8 @@ class JournalPosterElement extends StatefulWidget {
 }
 
 class JournalPosterElementState extends State<JournalPosterElement> {
+  final ImagePicker _picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,13 +48,42 @@ class JournalPosterElementState extends State<JournalPosterElement> {
             ),
           ),
           const SizedBox(width: 10),
-          Column(
-            children: [
-              FloatingActionButton(
-                onPressed: _addJournalEntry,
-                child: const Icon(Icons.book),
+          PopupMenuButton<int>(
+            icon: const Icon(Icons.photo_camera),
+            onSelected: (value) async {
+              if (value == 0) {
+                _takePhoto();
+              } else if (value == 1) {
+                _addPhotoFromDevice();
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 0,
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_alt),
+                    SizedBox(width: 8),
+                    Text('Take Photo'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.photo),
+                    SizedBox(width: 8),
+                    Text('Add from Device'),
+                  ],
+                ),
               ),
             ],
+          ),
+          const SizedBox(width: 10),
+          FloatingActionButton(
+            onPressed: _addJournalEntry,
+            child: const Icon(Icons.book),
           ),
         ],
       ),
@@ -67,6 +99,22 @@ class JournalPosterElementState extends State<JournalPosterElement> {
       );
       widget.postController.clear();
       widget.fetchJournalEntries();
+    }
+  }
+
+  Future<void> _takePhoto() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    if (photo != null) {
+      // Handle the photo taken
+      Log().i('Photo taken: ${photo.path}');
+    }
+  }
+
+  Future<void> _addPhotoFromDevice() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
+    if (photo != null) {
+      // Handle the photo picked from device
+      Log().i('Photo picked from device: ${photo.path}');
     }
   }
 }
