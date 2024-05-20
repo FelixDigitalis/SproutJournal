@@ -1,7 +1,7 @@
 <!-- TODO: change app name -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="sprout_journal"
+        android:label="SproutJournal"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
