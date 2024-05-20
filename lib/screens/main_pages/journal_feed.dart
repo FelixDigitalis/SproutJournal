@@ -16,7 +16,7 @@ class JournalFeedState extends State<JournalFeed> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: fetchPlants(), 
+      future: fetchPlants(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -42,7 +42,7 @@ class JournalFeedState extends State<JournalFeed> {
                       return JournalFeedElement(
                         plant: snapshot.data!,
                         plantFromManager: plantFromManager,
-                        fetch: fetchPlants,
+                        refreshFeed : _refreshFeed,
                       );
                     } else {
                       return const ListTile(
@@ -67,6 +67,10 @@ class JournalFeedState extends State<JournalFeed> {
         }
       },
     );
+  }
+
+  Future<void> _refreshFeed() async {
+    setState(() {});
   }
 
   Future<List<Map<String, dynamic>>> fetchPlants() async {

@@ -7,13 +7,13 @@ import 'package:sprout_journal/utils/log.dart';
 class JournalFeedElement extends StatefulWidget {
   final Plant plant;
   final Map<String, dynamic> plantFromManager;
-  final Function fetch;
+  final Function refreshFeed;
 
   const JournalFeedElement({
     super.key,
     required this.plant,
     required this.plantFromManager,
-    required this.fetch,
+    required this.refreshFeed,
   });
 
   @override
@@ -48,8 +48,7 @@ class JournalFeedElementState extends State<JournalFeedElement> {
         Log().d(hasDateBeenUpdated.toString());
 
         if (hasDateBeenUpdated) {
-          _updateDate();
-          widget.fetch();
+          widget.refreshFeed();
         }
       },
       child: Container(
