@@ -14,15 +14,16 @@ class JournalEntryManager extends DatabaseManager {
   Future<void> init(Database db, int version) async {
     Log().i("Creating journalEntry table in database");
     await db.execute('''
-          CREATE TABLE $table (
-                id INTEGER PRIMARY KEY, 
-                journalManagerID INTEGER NOT NULL,
-                text TEXT NOT NULL,
-                date DATE DEFAULT (DATETIME('now')),
-                photoPath TEXT DEFAULT NULL,
-                FOREIGN KEY (journalManagerID) REFERENCES $journalManagerTable (id) ON DELETE CASCADE
-          )
-          ''');
+    CREATE TABLE $table (
+      id INTEGER PRIMARY KEY, 
+      journalManagerID INTEGER NOT NULL,
+      text TEXT DEFAULT NULL,
+      date DATE DEFAULT (DATETIME('now')),
+      photoPath TEXT DEFAULT NULL,
+      FOREIGN KEY (journalManagerID) REFERENCES $journalManagerTable (id) ON DELETE CASCADE,
+      CHECK (text IS NOT NULL OR photoPath IS NOT NULL)
+    )
+  ''');
   }
 
   Future<int> addJournalEntry(int journalManagerID, String text,

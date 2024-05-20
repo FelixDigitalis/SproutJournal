@@ -21,9 +21,6 @@ class JournalEntryElement extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(entry['date'],
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSecondary)),
             if (entry['photoPath'] != null)
               Image.file(
                 File(entry['photoPath']),
@@ -31,6 +28,9 @@ class JournalEntryElement extends StatelessWidget {
                 width: 100,
                 fit: BoxFit.cover,
               ),
+            Text(entry['date'],
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSecondary)),
           ],
         ),
         onLongPress: onDelete,
