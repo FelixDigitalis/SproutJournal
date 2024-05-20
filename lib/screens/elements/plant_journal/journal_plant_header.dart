@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprout_journal/models/plant_model.dart';
 import 'package:sprout_journal/services/inventory_manager.dart';
+import 'package:sprout_journal/utils/log.dart';
 
 class JournalPlantHeader extends StatefulWidget {
   final Plant plant;
   final TextEditingController dateController;
   final String plantingDate;
-  final int plantID;
+  final int dbUUID;
   final Function(String) onDateChanged;
 
   const JournalPlantHeader({
@@ -15,7 +16,7 @@ class JournalPlantHeader extends StatefulWidget {
     required this.plant,
     required this.dateController,
     required this.plantingDate,
-    required this.plantID,
+    required this.dbUUID,
     required this.onDateChanged, 
   });
 
@@ -85,16 +86,18 @@ class JournalPlantHeaderState extends State<JournalPlantHeader> {
 
   // logic for the calendar element to change the date
   Future<void> _changeDate(BuildContext context) async {
+    Log().d("Plant: " + widget.dbUUID.toString() + ", Name: " + widget.plant.germanName);
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateFormat('dd.MM.yyyy').parse(_currentPlantingDate),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
+    Log().d(picked.toString()); 
     if (picked != null) {
       final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
       final displayDate = DateFormat('dd.MM.yyyy').format(picked);
-      int state = await InventoryManager.instance.updatePlantingDate(widget.plantID, formattedDate);
+      int state = await InventoryManager.instance.updatePlantingDate(widget.dbUUID, formattedDate);
 
       if (state == 1) {
         setState(() {

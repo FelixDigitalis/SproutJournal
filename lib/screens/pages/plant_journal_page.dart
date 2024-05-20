@@ -24,6 +24,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   late TextEditingController _postController;
   late String plantingDate;
   late int plantID;
+  late int dbUUID;
   List<Map<String, dynamic>> _journalEntries = [];
 
   @override
@@ -34,6 +35,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     _postController = TextEditingController();
     plantingDate = widget.plantFromManager['plantingDate'];
     plantID = widget.plantFromManager['plantID'];
+    dbUUID = widget.plantFromManager['id'];
     _fetchJournalEntries();
   }
 
@@ -58,7 +60,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
               plant: widget.plant,
               dateController: _dateController,
               plantingDate: plantingDate,
-              plantID: plantID,
+              dbUUID: dbUUID,
               onDateChanged: _updatePlantingDate, 
             ),
             JournalPosterElement(
