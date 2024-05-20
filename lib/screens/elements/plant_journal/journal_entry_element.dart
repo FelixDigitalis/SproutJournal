@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as img;
+import '../../../utils/log.dart'; 
 
 class JournalEntryElement extends StatelessWidget {
   final Map<String, dynamic> entry;
@@ -65,6 +66,7 @@ class JournalEntryElement extends StatelessWidget {
                         ),
                       );
                     } else if (snapshot.hasError) {
+                      Log().e('Error loading image: ${snapshot.error}');
                       return Container(
                         height: 200,
                         color: Colors.grey[300],
@@ -72,7 +74,7 @@ class JournalEntryElement extends StatelessWidget {
                           child: Icon(Icons.error, color: Colors.red),
                         ),
                       );
-                    } else {
+                    } else if (snapshot.hasData) {
                       final imageFile = snapshot.data!;
                       return FutureBuilder<bool>(
                         future: _isImageVertical(imageFile.path),
@@ -84,6 +86,8 @@ class JournalEntryElement extends StatelessWidget {
                               child: const CircularProgressIndicator(),
                             );
                           } else if (orientationSnapshot.hasError) {
+                            Log().e(
+                                'Error determining image orientation: ${orientationSnapshot.error}');
                             return Container(
                               padding: const EdgeInsets.all(10.0),
                               child: const Icon(Icons.error),
@@ -104,6 +108,14 @@ class JournalEntryElement extends StatelessWidget {
                           }
                         },
                       );
+                    } else {
+                      return Container(
+                        height: 200,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: Icon(Icons.error, color: Colors.red),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -119,16 +131,37 @@ class JournalEntryElement extends StatelessWidget {
   }
 
   Future<bool> _isImageVertical(String path) async {
-    final bytes = await File(path).readAsBytes();
-    final image = img.decodeImage(bytes);
-    if (image != null) {
-      return image.height > image.width;
+    try {
+      final bytes = await File(path).readAsBytes();
+      final image = img.decodeImage(bytes);
+      if (image != null) {
+        return image.height > image.width;
+      } else {
+        throw Exception('Unable to decode image');
+      }
+    } catch (e) {
+      Log().e('Error in _isImageVertical: $e');
+      return false;
     }
-    return false;
   }
 
   Future<File> _loadImage(String path) async {
-    final cacheManager = DefaultCacheManager();
-    return await cacheManager.getSingleFile(path);
+    try {
+      final cacheManager = DefaultCacheManager();
+      // Check if the image is cached
+      final fileInfo = await cacheManager.getFileFromCache(path);
+      if (fileInfo != null) {
+        // Return the cached image file
+        return fileInfo.file;
+      } else {
+        // If not cached, cache the file and return it
+        final file = File(path);
+        await cacheManager.putFile(path, file.readAsBytesSync());
+        return file;
+      }
+    } catch (e) {
+      Log().e('Error in _loadImage: $e');
+      throw e;
+    }
   }
 }
