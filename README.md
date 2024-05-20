@@ -13,7 +13,5 @@
 
 ### TODO: Bugs
 
-- Samsung Phone
-    - in some plants date cannot be updated ->  app does not crash
 - Test device:
     - Date does not update when you go back from journal to journal feed

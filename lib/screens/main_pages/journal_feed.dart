@@ -3,7 +3,7 @@ import '../../services/inventory_manager.dart';
 import '../../models/plant_model.dart';
 import '../../services/json_manager.dart';
 import '../../utils/log.dart';
-import '../elements/journal_plant_element.dart';
+import '../elements/journal_feed_element.dart';
 
 class JournalFeed extends StatefulWidget {
   const JournalFeed({super.key});
@@ -39,9 +39,10 @@ class JournalFeedState extends State<JournalFeed> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasData && snapshot.data != null) {
-                      return JournalPlantElement(
+                      return JournalFeedElement(
                         plant: snapshot.data!,
                         plantFromManager: plantFromManager,
+                        fetch: fetchPlants,
                       );
                     } else {
                       return const ListTile(

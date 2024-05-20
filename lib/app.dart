@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'screens/main_pages/main_pages_manager.dart';
 import 'utils/log.dart';
 
-
 class App extends StatelessWidget {
   const App({super.key});
   @override
@@ -18,16 +17,16 @@ class App extends StatelessWidget {
           onPrimary: Colors.white,
           secondary: Color.fromRGBO(194, 222, 162, 1),
           onSecondary: Colors.black,
-          error:  Colors.red,
+          error: Colors.red,
           onError: Colors.white,
           background: Colors.white,
           onBackground: Colors.black,
           surface: Colors.lightGreen,
           onSurface: Colors.white,
         ),
-        scaffoldBackgroundColor:Colors.white,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const PageManager(), 
+      home: const PageManager(),
     );
   }
 }

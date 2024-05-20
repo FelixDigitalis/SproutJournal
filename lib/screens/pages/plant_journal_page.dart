@@ -4,10 +4,12 @@ import '../../services/journal_entry_manager.dart';
 import '../elements/plant_journal/journal_entry_element.dart';
 import '../elements/plant_journal/journal_poster_element.dart';
 import '../elements/plant_journal/journal_plant_header.dart';
+import 'package:sprout_journal/utils/log.dart';
 
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
   final Map<String, dynamic> plantFromManager;
+  
 
   const PlantJournalPage({
     super.key,
@@ -25,10 +27,12 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   late String plantingDate;
   late int plantID;
   late int dbUUID;
+  late bool hasDateBeenUpdated;
   List<Map<String, dynamic>> _journalEntries = [];
 
   @override
   void initState() {
+    Log().e("init");
     super.initState();
     _dateController =
         TextEditingController(text: widget.plantFromManager['plantingDate']);
@@ -36,6 +40,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     plantingDate = widget.plantFromManager['plantingDate'];
     plantID = widget.plantFromManager['plantID'];
     dbUUID = widget.plantFromManager['id'];
+    hasDateBeenUpdated = false;
     _fetchJournalEntries();
   }
 
@@ -48,29 +53,39 @@ class PlantJournalPageState extends State<PlantJournalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(context),
-      body: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            JournalPlantHeader(
-              plant: widget.plant,
-              dateController: _dateController,
-              plantingDate: plantingDate,
-              dbUUID: dbUUID,
-              onDateChanged: _updatePlantingDate, 
-            ),
-            JournalPosterElement(
-              postController: _postController,
-              plantID: plantID,
-              fetchJournalEntries: _fetchJournalEntries,
-            ),
-            const SizedBox(height: 20),
-            _buildJournalEntriesList(),
-          ],
+    return PopScope(
+      // https://docs.flutter.dev/release/breaking-changes/android-predictive-back
+      canPop: false,
+      onPopInvoked: (bool hasPoped) {
+        if (!hasPoped) {
+          hasPoped = true;
+          Navigator.pop(context, hasDateBeenUpdated);
+        }
+      },
+      child: Scaffold(
+        appBar: _buildAppBar(context),
+        body: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              JournalPlantHeader(
+                plant: widget.plant,
+                dateController: _dateController,
+                plantingDate: plantingDate,
+                dbUUID: dbUUID,
+                onDateChanged: _updatePlantingDate,
+              ),
+              JournalPosterElement(
+                postController: _postController,
+                plantID: plantID,
+                fetchJournalEntries: _fetchJournalEntries,
+              ),
+              const SizedBox(height: 20),
+              _buildJournalEntriesList(),
+            ],
+          ),
         ),
       ),
     );
@@ -86,6 +101,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   }
 
   void _updatePlantingDate(String newDate) {
+    hasDateBeenUpdated = true;
     setState(() {
       plantingDate = newDate;
     });
@@ -134,14 +150,6 @@ class PlantJournalPageState extends State<PlantJournalPage> {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text(
-        widget.plant.germanName,
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.onPrimary,
-        ),
-      ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
         IconButton(

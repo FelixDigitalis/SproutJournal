@@ -30,6 +30,19 @@ class InventoryManager extends DatabaseManager {
     return await db.insert(table, row);
   }
 
+  Future<String> getPlantingDate(int id) async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> plant = await db.rawQuery('''
+      SELECT 
+        strftime('%d.%m.%Y', plantingDate) AS plantingDate
+      FROM 
+        $table
+      WHERE 
+        id = $id
+    ''');
+    return plant[0]['plantingDate'];
+  }
+
   Future<List<Map<String, dynamic>>> getAllPlants() async {
     final db = await instance.database;
     final List<Map<String, dynamic>> plants = await db.rawQuery('''
@@ -71,7 +84,7 @@ class InventoryManager extends DatabaseManager {
   Future<int> deleteAll() async {
     final db = await instance.database;
     return await db.delete(
-      table, 
+      table,
     );
   }
 }
