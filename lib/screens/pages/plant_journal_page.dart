@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprout_journal/services/inventory_manager.dart';
 import '../../models/plant_model.dart';
 import '../../services/journal_entry_manager.dart';
 import '../elements/plant_journal/journal_entry_element.dart';
@@ -9,7 +10,6 @@ import 'package:sprout_journal/utils/log.dart';
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
   final Map<String, dynamic> plantFromManager;
-  
 
   const PlantJournalPage({
     super.key,
@@ -80,6 +80,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
               JournalPosterElement(
                 postController: _postController,
                 plantID: plantID,
+                uuid: dbUUID,
                 fetchJournalEntries: _fetchJournalEntries,
               ),
               const SizedBox(height: 20),
@@ -148,16 +149,59 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context) {
+    AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       actions: [
         IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              // TODO: Implement delete plant
+              // InventoryManager.instance.deletePlant(dbUUID);
+              _showDeletePlantDialog(context);
+              // Navigator.pop(context, true);
             }),
       ],
+    );
+  }
+
+  void _showDeletePlantDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: Text(
+            'Planze löschen?',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
+          content: Text(
+            'Die Pflanze wird endgültig aus Deinem Inventar gelöscht. Dies kann nicht Rückgängig gemacht werden.',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Abbrechen',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                InventoryManager.instance.deletePlant(dbUUID);
+                Navigator.pop(context, true);
+              },
+              child: const Text(
+                'Löschen',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

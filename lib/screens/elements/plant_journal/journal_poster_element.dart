@@ -7,12 +7,14 @@ class JournalPosterElement extends StatefulWidget {
   final TextEditingController postController;
   final int plantID;
   final VoidCallback fetchJournalEntries;
+  final int uuid;
 
   const JournalPosterElement({
     super.key,
     required this.postController,
     required this.plantID,
     required this.fetchJournalEntries,
+    required this.uuid,
   });
 
   @override
@@ -64,7 +66,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
                   children: [
                     Icon(Icons.camera_alt),
                     SizedBox(width: 8),
-                    Text('Take Photo'),
+                    Text('Foto aufnehmen'),
                   ],
                 ),
               ),
@@ -74,7 +76,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
                   children: [
                     Icon(Icons.photo),
                     SizedBox(width: 8),
-                    Text('Add from Device'),
+                    Text('Foto vom Gerät'),
                   ],
                 ),
               ),
@@ -105,16 +107,24 @@ class JournalPosterElementState extends State<JournalPosterElement> {
   Future<void> _takePhoto() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      // Handle the photo taken
       Log().i('Photo taken: ${photo.path}');
+      await JournalEntryManager.instance.addPhotoPathToJournalEntry(
+        widget.uuid,
+        photo.path,
+      );
+      widget.fetchJournalEntries();
     }
   }
 
   Future<void> _addPhotoFromDevice() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
     if (photo != null) {
-      // Handle the photo picked from device
       Log().i('Photo picked from device: ${photo.path}');
+      await JournalEntryManager.instance.addPhotoPathToJournalEntry(
+        widget.uuid,
+        photo.path,
+      );
+      widget.fetchJournalEntries();
     }
   }
 }

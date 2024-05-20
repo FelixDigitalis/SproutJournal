@@ -80,4 +80,12 @@ class JournalEntryManager extends DatabaseManager {
     }
     return null;
   }
+
+  Future<int> addPhotoPathToJournalEntry(int id, String photoPath) async {
+    final db = await instance.database;
+    final row = {
+      'photoPath': photoPath,
+    };
+    return await db.update(table, row, where: 'id = ?', whereArgs: [id]);
+  }
 }
