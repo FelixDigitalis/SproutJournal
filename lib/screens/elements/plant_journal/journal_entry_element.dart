@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as img;
 
 class JournalEntryElement extends StatelessWidget {
@@ -44,7 +45,7 @@ class JournalEntryElement extends StatelessWidget {
                                   borderRadius: BorderRadius.zero,
                                 ),
                               ),
-                              child: const Text('Schließen'),
+                              child: const Text('Close'),
                             ),
                           ],
                         ),
@@ -52,30 +53,56 @@ class JournalEntryElement extends StatelessWidget {
                     },
                   );
                 },
-                child: FutureBuilder<bool>(
-                  future: _isImageVertical(entry['photoPath']),
+                child: FutureBuilder<File>(
+                  future: _loadImage(entry['photoPath']),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: const CircularProgressIndicator(),
+                        height: 200,
+                        color: Colors.grey[300], // Placeholder background color
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
                     } else if (snapshot.hasError) {
                       return Container(
-                        padding: const EdgeInsets.all(10.0),
-                        child: const Icon(Icons.error),
+                        height: 200,
+                        color: Colors.grey[300],
+                        child: const Center(
+                          child: Icon(Icons.error, color: Colors.red),
+                        ),
                       );
                     } else {
-                      final isVertical = snapshot.data ?? false;
-                      return Container(
-                        padding: const EdgeInsets.all(10.0),
-                        constraints: isVertical
-                            ? const BoxConstraints(maxWidth: 200)
-                            : const BoxConstraints(),
-                        child: Image.file(
-                          File(entry['photoPath']),
-                          fit: BoxFit.cover,
-                        ),
+                      final imageFile = snapshot.data!;
+                      return FutureBuilder<bool>(
+                        future: _isImageVertical(imageFile.path),
+                        builder: (context, orientationSnapshot) {
+                          if (orientationSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: const CircularProgressIndicator(),
+                            );
+                          } else if (orientationSnapshot.hasError) {
+                            return Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: const Icon(Icons.error),
+                            );
+                          } else {
+                            final isVertical =
+                                orientationSnapshot.data ?? false;
+                            return Container(
+                              padding: const EdgeInsets.all(10.0),
+                              constraints: isVertical
+                                  ? const BoxConstraints(maxWidth: 200)
+                                  : const BoxConstraints(),
+                              child: Image.file(
+                                imageFile,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          }
+                        },
                       );
                     }
                   },
@@ -98,5 +125,10 @@ class JournalEntryElement extends StatelessWidget {
       return image.height > image.width;
     }
     return false;
+  }
+
+  Future<File> _loadImage(String path) async {
+    final cacheManager = DefaultCacheManager();
+    return await cacheManager.getSingleFile(path);
   }
 }

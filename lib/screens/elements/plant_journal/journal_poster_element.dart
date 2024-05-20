@@ -39,10 +39,10 @@ class JournalPosterElementState extends State<JournalPosterElement> {
                 child: TextField(
                   controller: widget.postController,
                   decoration: InputDecoration(
-                    labelText: 'Neuer Journal Eintrag',
+                    labelText: 'Neuer Eintrag',
                     labelStyle: TextStyle(
                       fontSize: 18,
-                      color: Theme.of(context).colorScheme.onSecondary,
+                      color: Colors.grey[600],
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
