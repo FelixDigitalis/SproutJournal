@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../services/journal_entry_manager.dart';
-import '../../utils/log.dart';
+import '../../../services/journal_entry_manager.dart';
+import '../../../utils/log.dart';
 
 class JournalPosterElement extends StatefulWidget {
   final TextEditingController postController;

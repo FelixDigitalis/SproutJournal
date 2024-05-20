@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../models/plant_model.dart';
-import '../../services/inventory_manager.dart';
 import '../../services/journal_entry_manager.dart';
-import '../elements/journal_entry_element.dart';
-import '../elements/journal_poster_element.dart';
+import '../elements/plant_journal/journal_entry_element.dart';
+import '../elements/plant_journal/journal_poster_element.dart';
+import '../elements/plant_journal/journal_plant_header.dart';
 
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
@@ -30,9 +29,8 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   @override
   void initState() {
     super.initState();
-    _dateController = TextEditingController(
-      text: widget.plantFromManager['plantingDate'],
-    );
+    _dateController =
+        TextEditingController(text: widget.plantFromManager['plantingDate']);
     _postController = TextEditingController();
     plantingDate = widget.plantFromManager['plantingDate'];
     plantID = widget.plantFromManager['plantID'];
@@ -56,13 +54,79 @@ class PlantJournalPageState extends State<PlantJournalPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _buildPlantHeader(context),
-            JournalPosterElement(postController: _postController, plantID: plantID, fetchJournalEntries: _fetchJournalEntries,),
+            JournalPlantHeader(
+              plant: widget.plant,
+              dateController: _dateController,
+              plantingDate: plantingDate,
+              plantID: plantID,
+              onDateChanged: _updatePlantingDate, 
+            ),
+            JournalPosterElement(
+              postController: _postController,
+              plantID: plantID,
+              fetchJournalEntries: _fetchJournalEntries,
+            ),
             const SizedBox(height: 20),
             _buildJournalEntriesList(),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _fetchJournalEntries() async {
+    final entries = await JournalEntryManager.instance.getAllJournalEntries();
+    setState(() {
+      _journalEntries = entries
+          .where((entry) => entry['journalManagerID'] == plantID)
+          .toList();
+    });
+  }
+
+  void _updatePlantingDate(String newDate) {
+    setState(() {
+      plantingDate = newDate;
+    });
+  }
+
+  void _showDeleteDialog(
+      BuildContext context, Map<String, dynamic> entry, int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: Text(
+            'Eintrag löschen?',
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Abbrechen',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  JournalEntryManager.instance.deleteJournalEntry(entry['id']);
+                  _journalEntries.removeAt(index);
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Löschen',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -87,56 +151,6 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     );
   }
 
-  Widget _buildPlantHeader(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Image.asset(
-          "assets/images/plants/${widget.plant.englishName.toLowerCase()}.png",
-          width: 100,
-          height: 100,
-          fit: BoxFit.cover,
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                widget.plant.germanName,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
-              ),
-              TextField(
-                controller: _dateController,
-                decoration: InputDecoration(
-                  labelText: 'Gepflanzt am',
-                  labelStyle: TextStyle(
-                    fontSize: 18,
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () => _changeDate(context),
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  ),
-                ),
-                readOnly: true,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildJournalEntriesList() {
     return Expanded(
       child: ListView.builder(
@@ -151,67 +165,6 @@ class PlantJournalPageState extends State<PlantJournalPage> {
           );
         },
       ),
-    );
-  }
-
-  Future<void> _fetchJournalEntries() async {
-    final entries = await JournalEntryManager.instance.getAllJournalEntries();
-    setState(() {
-      _journalEntries = entries
-          .where((entry) => entry['journalManagerID'] == plantID)
-          .toList();
-    });
-  }
-
-  Future<void> _changeDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateFormat('dd.MM.yyyy').parse(plantingDate),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      final formattedDate = DateFormat('yyyy-MM-dd').format(picked);
-      final displayDate = DateFormat('dd.MM.yyyy').format(picked);
-      plantingDate = displayDate;
-      int state = await InventoryManager.instance
-          .updatePlantingDate(plantID, formattedDate);
-
-      if (state == 1) {
-        setState(() {
-          _dateController.text = displayDate;
-        });
-      }
-    }
-  }
-
-  void _showDeleteDialog(BuildContext context, Map<String, dynamic> entry, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          title: Text('Eintrag löschen?', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Abbrechen', style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  JournalEntryManager.instance.deleteJournalEntry(entry['id']);
-                  _journalEntries.removeAt(index);
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('Löschen', style: TextStyle(color: Colors.red),),
-            ),
-          ],
-        );
-      },
     );
   }
 }
