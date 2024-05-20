@@ -113,7 +113,7 @@ class PlantDescriptionPage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: FloatingActionButton(
           onPressed: () => _showAddPlantDialog(context),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           child: const Icon(Icons.add, size: 24),
         ),
       ),
@@ -138,7 +138,7 @@ class PlantDescriptionPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                InventoryManager.instance.addPlantToInventory(plant.id, "foo");
+                InventoryManager.instance.addPlantToInventory(plant.id);
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(

@@ -21,11 +21,10 @@ class InventoryManager extends DatabaseManager {
           ''');
   }
 
-  Future<int> addPlantToInventory(int plantID, String description) async {
+  Future<int> addPlantToInventory(int plantID) async {
     final db = await instance.database;
     final row = {
       'plantID': plantID,
-      'description': description,
     };
     return await db.insert(table, row);
   }
