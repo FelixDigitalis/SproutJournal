@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:image/image.dart' as img;
-import '../../../utils/log.dart'; 
+import '../../../utils/log.dart';
 
 class JournalEntryElement extends StatelessWidget {
   final Map<String, dynamic> entry;
@@ -60,7 +59,7 @@ class JournalEntryElement extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
                         height: 200,
-                        color: Colors.grey[300], // Placeholder background color
+                        color: Colors.grey[300], 
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),
@@ -147,18 +146,8 @@ class JournalEntryElement extends StatelessWidget {
 
   Future<File> _loadImage(String path) async {
     try {
-      final cacheManager = DefaultCacheManager();
-      // Check if the image is cached
-      final fileInfo = await cacheManager.getFileFromCache(path);
-      if (fileInfo != null) {
-        // Return the cached image file
-        return fileInfo.file;
-      } else {
-        // If not cached, cache the file and return it
-        final file = File(path);
-        await cacheManager.putFile(path, file.readAsBytesSync());
-        return file;
-      }
+      final file = File(path);
+      return file;
     } catch (e) {
       Log().e('Error in _loadImage: $e');
       throw e;
