@@ -150,7 +150,7 @@ class JournalEntryElement extends StatelessWidget {
       return file;
     } catch (e) {
       Log().e('Error in _loadImage: $e');
-      throw e;
+      rethrow;
     }
   }
 }

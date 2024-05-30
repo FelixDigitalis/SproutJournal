@@ -12,17 +12,21 @@ class _SettingsMenuState extends State<SettingsMenu> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Einstellungen',
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600)),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: ListView(
         children: [
           ListTile(
-            title: Text('Über', style: TextStyle(color: Theme.of(context).colorScheme.onBackground),),
-            subtitle: Text(
-                'SproutJournal, ein App Projekt von Felix im Sommersemester 2024', style: TextStyle(color: Theme.of(context).colorScheme.onBackground),),
+            title: const Text('Über',
+                style: TextStyle(
+                  color: Colors.black,
+                )),
+            subtitle: const Text(
+                'SproutJournal, ein App Projekt von Felix im Sommersemester 2024',
+                style: TextStyle(
+                  color: Colors.black,
+                )),
             onTap: () {},
           ),
         ],

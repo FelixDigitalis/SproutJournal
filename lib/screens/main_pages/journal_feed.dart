@@ -57,11 +57,11 @@ class JournalFeedState extends State<JournalFeed> {
             },
           );
         } else {
-          return Center(
+          return const Center(
             child: Text(
               'Bisher keine Pflanzen im Journal',
               style:
-                  TextStyle(color: Theme.of(context).colorScheme.onBackground),
+                  TextStyle(color: Colors.black),
             ),
           );
         }

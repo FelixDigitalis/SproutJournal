@@ -159,7 +159,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
   }
 
   Future<File> _compressImage(File file) async {
-    final compressedImagePath = file.path.replaceAll('.jpg', '_compressed.jpg');
+    final compressedImagePath = file.path.replaceAll('.jpg', '.jpg');
     final compressedImage = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       compressedImagePath,

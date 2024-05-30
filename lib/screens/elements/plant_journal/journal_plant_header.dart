@@ -86,7 +86,7 @@ class JournalPlantHeaderState extends State<JournalPlantHeader> {
 
   // logic for the calendar element to change the date
   Future<void> _changeDate(BuildContext context) async {
-    Log().d("Plant: " + widget.dbUUID.toString() + ", Name: " + widget.plant.germanName);
+    Log().d("Plant: ${widget.dbUUID}, Name: ${widget.plant.germanName}");
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateFormat('dd.MM.yyyy').parse(_currentPlantingDate),
