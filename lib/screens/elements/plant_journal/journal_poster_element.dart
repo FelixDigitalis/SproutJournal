@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import '../../../services/journal_entry_manager.dart';
 import '../../../utils/log.dart';
 
@@ -59,9 +60,9 @@ class JournalPosterElementState extends State<JournalPosterElement> {
                 icon: const Icon(Icons.photo_camera),
                 onSelected: (value) async {
                   if (value == 0) {
-                    _takePhoto();
+                    await _takePhoto();
                   } else if (value == 1) {
-                    _addPhotoFromDevice();
+                    await _addPhotoFromDevice();
                   }
                 },
                 itemBuilder: (context) => [
@@ -106,10 +107,8 @@ class JournalPosterElementState extends State<JournalPosterElement> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    _popImageFromPrieview();
-                  },
-                  child: const Text('Bild entfehrnen'),
+                  onPressed: _popImageFromPreview,
+                  child: const Text('Bild entfernen'),
                 ),
               ],
             ),
@@ -127,7 +126,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
           widget.postController.text,
           photoPath: _selectedImagePath,
         );
-        _popImageFromPrieview();
+        _popImageFromPreview();
       } else {
         await JournalEntryManager.instance.addJournalEntry(
           widget.plantID,
@@ -142,8 +141,9 @@ class JournalPosterElementState extends State<JournalPosterElement> {
   Future<void> _takePhoto() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
+      final compressedImage = await _compressImage(File(photo.path));
       setState(() {
-        _selectedImagePath = photo.path;
+        _selectedImagePath = compressedImage.path;
       });
     }
   }
@@ -151,13 +151,24 @@ class JournalPosterElementState extends State<JournalPosterElement> {
   Future<void> _addPhotoFromDevice() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
     if (photo != null) {
+      final compressedImage = await _compressImage(File(photo.path));
       setState(() {
-        _selectedImagePath = photo.path;
+        _selectedImagePath = compressedImage.path;
       });
     }
   }
 
-  void _popImageFromPrieview() {
+  Future<File> _compressImage(File file) async {
+    final compressedImagePath = file.path.replaceAll('.jpg', '_compressed.jpg');
+    final compressedImage = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      compressedImagePath,
+      quality: 90, 
+    );
+    return compressedImage ?? file;
+  }
+
+  void _popImageFromPreview() {
     setState(() {
       _selectedImagePath = null;
     });

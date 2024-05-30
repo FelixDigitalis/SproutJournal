@@ -15,7 +15,7 @@ dependencies:
   path: ^1.9.0  
   intl: ^0.17.0
   image_picker: ^0.8.4+8
-  flutter_cache_manager: ^3.3.0
+  flutter_image_compress: ^1.1.0
   image: any
 
   firebase_core: ^2.24.2
