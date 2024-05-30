@@ -159,13 +159,24 @@ class JournalPosterElementState extends State<JournalPosterElement> {
   }
 
   Future<File> _compressImage(File file) async {
-    final compressedImagePath = file.path.replaceAll('.jpg', '.jpg');
-    final compressedImage = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      compressedImagePath,
-      quality: 90, 
-    );
-    return compressedImage ?? file;
+    Log().i('Before compress: ${file.lengthSync()}');
+    try {
+      Log().i('Compressing image: ${file.absolute.path}');
+      XFile? result = await FlutterImageCompress.compressAndGetFile(
+          file.absolute.path, file.absolute.path,
+          quality: 20);
+      Log().i('Compressed image');
+      if (result != null) {
+        File f = File(result.path);
+        Log().i('After compress: ${f.lengthSync()}');
+        return f;
+      } else {
+        throw Exception('Compress failed');
+      }
+    } catch (e) {
+      Log().e('Compress error: $e');
+      return file;
+    }
   }
 
   void _popImageFromPreview() {

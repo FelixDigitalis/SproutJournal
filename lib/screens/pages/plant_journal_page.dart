@@ -5,7 +5,7 @@ import '../../services/journal_entry_manager.dart';
 import '../elements/plant_journal/journal_entry_element.dart';
 import '../elements/plant_journal/journal_poster_element.dart';
 import '../elements/plant_journal/journal_plant_header.dart';
-import 'package:sprout_journal/utils/log.dart';
+// import 'package:sprout_journal/utils/log.dart';
 
 class PlantJournalPage extends StatefulWidget {
   final Plant plant;
@@ -32,7 +32,6 @@ class PlantJournalPageState extends State<PlantJournalPage> {
 
   @override
   void initState() {
-    Log().e("init");
     super.initState();
     _dateController =
         TextEditingController(text: widget.plantFromManager['plantingDate']);
