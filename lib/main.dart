@@ -3,15 +3,16 @@ import 'app.dart';
 import 'utils/log.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'services/firebase/firebase_options.dart';
+import 'database_services/firebase/firebase_options.dart';
 
 void main() async {
   Log().i("Main started");
+
+  // load firebase credentials
   await dotenv.load(fileName: ".env");
+  Log().d("C: ${dotenv.env['API_KEY']}");
   DefaultFirebaseOptions.setCreds({
-    'api_key_android': dotenv.env['API_KEY_ANDROID'],
-    'api_key_ios': dotenv.env['API_KEY_IOS'],
-    'api_key_web': dotenv.env['API_KEY_WEB'],
+    'api_key_android': dotenv.env['API_KEY'],
     'app_id': dotenv.env['APP_ID'],
     'messaging_sender_id': dotenv.env['MESSAGING_SENDER_ID'],
     'project_id': dotenv.env['PROJECT_ID'],

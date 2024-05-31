@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../elements/bottom_bar_element.dart';
 import '../pages/settings_page.dart';
-import 'friends_page.dart';
+import 'gartenfreunde_page.dart';
 import 'journal_feed.dart';
 import 'library_feed.dart';
 
@@ -17,7 +17,7 @@ class _PageManagerState extends State<PageManager> {
   final List<Widget> _widgetOptions = <Widget>[
     const JournalFeed(),
     const PlantFeed(),
-    const FriendsPage(),
+    const GartenfreundePage(),
   ];
 
   void _onItemTapped(int index) {

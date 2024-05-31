@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import '../../../services/journal_entry_manager.dart';
+import '../../../database_services/sqllite/journal_entry_manager.dart';
 import '../../../utils/log.dart';
 
 class JournalPosterElement extends StatefulWidget {

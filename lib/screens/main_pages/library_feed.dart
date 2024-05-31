@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/elements/library_plant_element.dart';
-import '../../services/json_manager.dart';
+import '../../database_services/json_manager.dart';
 import '../../models/plant_model.dart';
 
 class PlantFeed extends StatefulWidget {

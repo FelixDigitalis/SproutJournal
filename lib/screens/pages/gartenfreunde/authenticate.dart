@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
-import '../../../services/firebase/firebase_service.dart';
+import '../../../database_services/firebase/firebase_service.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({super.key});

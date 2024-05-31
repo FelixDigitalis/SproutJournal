@@ -1,4 +1,4 @@
-import '../../../services/firebase/firebase_auth.dart';
+import '../../../database_services/firebase/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {

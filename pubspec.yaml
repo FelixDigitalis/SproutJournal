@@ -35,6 +35,7 @@ flutter:
     - assets/plants.json
     - assets/images/standard_plant.png
     - assets/images/plants/
+    - .env
 
 flutter_launcher_icons:
   android : "launcher_icon" 

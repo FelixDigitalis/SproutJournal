@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../services/inventory_manager.dart';
+import '../../database_services/sqllite/inventory_manager.dart';
 import '../../models/plant_model.dart';
-import '../../services/json_manager.dart';
+import '../../database_services/json_manager.dart';
 import '../../utils/log.dart';
 import '../elements/journal_feed_element.dart';
 

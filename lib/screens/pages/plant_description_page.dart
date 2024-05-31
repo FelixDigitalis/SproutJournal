@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../models/plant_model.dart';
-import '../../services/inventory_manager.dart';
+import '../../database_services/sqllite/inventory_manager.dart';
 // import '../../services/log.dart';
 
 class PlantDescriptionPage extends StatelessWidget {

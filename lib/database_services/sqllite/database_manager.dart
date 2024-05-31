@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'journal_entry_manager.dart';
 import 'inventory_manager.dart';
-import '../utils/log.dart';
+import '../../utils/log.dart';
 
 abstract class DatabaseManager {
   static const _databaseName = "sproutJournalDB.db";

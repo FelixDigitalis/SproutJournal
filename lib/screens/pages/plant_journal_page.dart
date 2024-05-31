@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sprout_journal/services/inventory_manager.dart';
+import 'package:sprout_journal/database_services/sqllite/inventory_manager.dart';
 import '../../models/plant_model.dart';
-import '../../services/journal_entry_manager.dart';
+import '../../database_services/sqllite/journal_entry_manager.dart';
 import '../elements/plant_journal/journal_entry_element.dart';
 import '../elements/plant_journal/journal_poster_element.dart';
 import '../elements/plant_journal/journal_plant_header.dart';

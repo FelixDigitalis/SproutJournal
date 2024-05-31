@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sprout_journal/models/plant_model.dart';
-import 'package:sprout_journal/services/inventory_manager.dart';
+import 'package:sprout_journal/database_services/sqllite/inventory_manager.dart';
 import 'package:sprout_journal/utils/log.dart';
 
 class JournalPlantHeader extends StatefulWidget {

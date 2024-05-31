@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'authenticate.dart';
-import '../../main_pages/main_pages_manager.dart';
+import '../pages/gartenfreunde/authenticate.dart';
 import 'package:provider/provider.dart';
-import '../../../models/user_model.dart';
+import '../../models/user_model.dart';
+import '../../utils/log.dart';
 
 class Wrapper extends StatelessWidget {
-  const Wrapper({super.key});
+  final Widget child;
+
+  const Wrapper({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
-
+    Log().d("Wrapper started!");	  
     final user = Provider.of<UserModel?>(context);
 
     if (user == null) {
       return const Authenticate();
     } else {
-      return PageManager();
+      return child;
     }
-
   }
 }
