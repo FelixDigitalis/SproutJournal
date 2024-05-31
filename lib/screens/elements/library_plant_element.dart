@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/models/plant_model.dart';
-import '../pages/plant_description_page.dart';
+import '../sub_pages/plant_description_page.dart';
 
 class LibraryPlantElement extends StatelessWidget {
   final Plant plant;

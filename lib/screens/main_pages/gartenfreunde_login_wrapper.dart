@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/gartenfreunde/authenticate.dart';
+import '../sub_pages/gartenfreunde/authenticate.dart';
 import 'package:provider/provider.dart';
 import '../../models/user_model.dart';
 import '../../utils/log.dart';

@@ -1,5 +1,5 @@
-import '../../../database_services/firebase/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../database_services/firebase/firebase_auth.dart';
 
 class Register extends StatefulWidget {
   final String email;
@@ -24,9 +24,13 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registrieren'),
+        title: const Text('Anmelden',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -39,20 +43,38 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    border: const OutlineInputBorder(),
+                    hintStyle: TextStyle(color: primaryColor),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
                   ),
+                  style: const TextStyle(color: Colors.black),
                   validator: (val) {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 TextFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Passwort',
-                    border: OutlineInputBorder(),
+                    hintStyle: TextStyle(color: primaryColor),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
                   ),
+                  style: const TextStyle(color: Colors.black),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
                       return 'Passwort eingeben';
@@ -66,14 +88,22 @@ class _RegisterState extends State<Register> {
                     setState(() => password = val);
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 TextFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Vorname',
-                    border: OutlineInputBorder(),
+                    hintStyle: TextStyle(color: primaryColor),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
                   ),
+                  style: const TextStyle(color: Colors.black),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
                       return 'Vornamen eingeben';
@@ -84,14 +114,22 @@ class _RegisterState extends State<Register> {
                     setState(() => firstname = val);
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 TextFormField(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Nachname',
-                    border: OutlineInputBorder(),
+                    hintStyle: TextStyle(color: primaryColor),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: primaryColor, width: 2.0),
+                    ),
                   ),
+                  style: const TextStyle(color: Colors.black),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
                       return 'Nachnamen eingeben';
@@ -102,9 +140,7 @@ class _RegisterState extends State<Register> {
                     setState(() => lastname = val);
                   },
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/models/plant_model.dart';
-import '../pages/plant_journal_page.dart';
+import '../sub_pages/plant_journal_page.dart';
 import 'package:sprout_journal/utils/log.dart';
 
 class JournalFeedElement extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../elements/bottom_bar_element.dart';
-import '../pages/settings_page.dart';
+import '../sub_pages/settings_page.dart';
 import 'gartenfreunde_page.dart';
 import 'journal_feed.dart';
 import 'library_feed.dart';
