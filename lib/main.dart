@@ -10,7 +10,6 @@ void main() async {
 
   // load firebase credentials
   await dotenv.load(fileName: ".env");
-  Log().d("C: ${dotenv.env['API_KEY']}");
   DefaultFirebaseOptions.setCreds({
     'api_key_android': dotenv.env['API_KEY'],
     'app_id': dotenv.env['APP_ID'],

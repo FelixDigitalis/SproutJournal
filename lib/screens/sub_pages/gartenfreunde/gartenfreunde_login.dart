@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprout_journal/screens/main_pages/gartenfreunde_page.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
@@ -93,10 +94,10 @@ class _SignInState extends State<SignIn> {
                     if (_formKey.currentState?.validate() ?? false) {
                       dynamic result = await _auth.signInWithEmailAndPassword(widget.email, password);
                       if (result == null) {
-                        setState(() => error = 'Einloggen fehlgeschlagen');
+                        setState(() => error = 'Falsche Anmeldedaten');
                       } else {
                         if (mounted) {
-                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const GartenfreundePage()));
                         }
                       }
                     }

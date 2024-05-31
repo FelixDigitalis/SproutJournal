@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
+import 'package:sprout_journal/screens/main_pages/gartenfreunde_page.dart';
 
 class Register extends StatefulWidget {
   final String email;
@@ -142,7 +143,8 @@ class _RegisterState extends State<Register> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
@@ -151,12 +153,17 @@ class _RegisterState extends State<Register> {
                         setState(() => error = 'Registrieren fehlgeschlagen');
                       } else {
                         if (mounted) {
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const GartenfreundePage()));
                         }
                       }
                     }
                   },
-                  child: const Text('Registrieren', style: TextStyle(color: Colors.white)),
+                  child: const Text('Registrieren',
+                      style: TextStyle(color: Colors.white)),
                 ),
                 Text(error),
               ],

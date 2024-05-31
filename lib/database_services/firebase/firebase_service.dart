@@ -13,7 +13,7 @@ class FirebaseService {
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('users');
 
-  // add new user to user 
+  // add new user to user
   Future createUser(String email, String firstname, String lastname) async {
     return await _userCollection.doc(uid).set({
       'email': email,
@@ -50,8 +50,13 @@ class FirebaseService {
 
   // check if a user is already registered
   Future<bool> isUserRegistered(String email) async {
-    final QuerySnapshot result =
-        await _userCollection.where('email', isEqualTo: email).limit(1).get();
-    return result.docs.isNotEmpty;
+    // if user is not registered he is not allowed to read in the user table
+    if (uid.isNotEmpty) {
+      return false;
+    } else {
+      final QuerySnapshot result =
+          await _userCollection.where('email', isEqualTo: email).limit(1).get();
+      return result.docs.isNotEmpty;
+    }
   }
 }
