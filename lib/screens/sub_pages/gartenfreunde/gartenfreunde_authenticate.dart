@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'register.dart';
+import 'gartenfreunde_login.dart';
+import 'gartenfreunde_register.dart';
 import '../../../database_services/firebase/firebase_service.dart';
 
 class Authenticate extends StatefulWidget {

@@ -5,16 +5,14 @@ import 'firebase_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseService fbService = FirebaseService();
+  FirebaseService? fbService;
 
   // create custom user obj based on firebase User
   Future<UserModel?> _userFromFirebaseUser(User? fbUser) async {
     if (fbUser != null) {
-      fbService.uid = fbUser.uid;
-      UserModel? user = await fbService.getUser();
-      if (user != null) {
-        return user;
-      }
+      fbService = FirebaseService(uid: fbUser.uid);
+      UserModel? user = await fbService?.getUser();
+      return user;
     }
     return null;
   }
@@ -24,24 +22,28 @@ class AuthService {
     return _auth.authStateChanges().asyncMap(_userFromFirebaseUser);
   }
 
-  Future<void> deleteUser(String uid) async {
+  Future<void> deleteUser() async {
     try {
       User? user = _auth.currentUser;
-      user!.delete();
+      if (user != null) {
+        fbService = FirebaseService(uid: user.uid);
+        await fbService?.deleteUser();
+        await user.delete();
+      }
     } catch (e) {
       Log().e("ERROR: $e");
     }
   }
 
   // sign in with email & password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<UserModel?> signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
 
       if (user != null) {
-        fbService.uid = user.uid;
+        fbService = FirebaseService(uid: user.uid);
       }
 
       return _userFromFirebaseUser(user);
@@ -52,7 +54,7 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(
+  Future<UserModel?> registerWithEmailAndPassword(
       String email, String password, String firstname, String lastname) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -61,8 +63,8 @@ class AuthService {
 
       // add user document in users collection
       if (user != null) {
-        fbService.uid = user.uid;
-        await fbService.createUser(user.email!, firstname, lastname);
+        fbService = FirebaseService(uid: user.uid);
+        await fbService?.createUser(user.email!, firstname, lastname);
       }
 
       return _userFromFirebaseUser(user);
@@ -73,7 +75,7 @@ class AuthService {
   }
 
   // sign out
-  Future signOut() async {
+  Future<void> signOut() async {
     try {
       return await _auth.signOut();
     } catch (e) {

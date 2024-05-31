@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../sub_pages/gartenfreunde/authenticate.dart';
+import 'gartenfreunde_authenticate.dart';
 import 'package:provider/provider.dart';
-import '../../models/user_model.dart';
-import '../../utils/log.dart';
+import '../../../models/user_model.dart';
+import '../../../utils/log.dart';
 
 class Wrapper extends StatelessWidget {
   final Widget child;
