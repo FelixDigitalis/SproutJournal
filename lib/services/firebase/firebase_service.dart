@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user_model.dart';
-import '../utils/log.dart';
+import '../../models/user_model.dart';
+import '../../utils/log.dart';
 
 class FirebaseService {
   String uid;

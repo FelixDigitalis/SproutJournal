@@ -164,7 +164,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
           '${file.parent.path}/${DateTime.now().millisecondsSinceEpoch}_compressed.jpg';
       XFile? result = await FlutterImageCompress.compressAndGetFile(
           file.absolute.path, targetPath,
-          quality: 5);
+          quality: 25);
       if (result != null) {
         File f = File(result.path);
         return f;

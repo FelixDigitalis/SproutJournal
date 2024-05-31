@@ -2,11 +2,11 @@
 
 ### Sources
 
-- Plant profiles from internet reseach with changes from own experience
+- Plant profiles from internet research with changes from own experience
 - App Logo and Standard Plant Image from DALL-E3
 - Plant Drawings (Creative Commons):
     - Tomato: https://commons.wikimedia.org/wiki/Category:SMART-Servier_Medical_Art_-_Food
-    - Cumcumber: https://commons.wikimedia.org/wiki/File:Cucumber.png
+    - Cucumber: https://commons.wikimedia.org/wiki/File:Cucumber.png
     - Pumpkin: https://commons.wikimedia.org/wiki/File:Pumpkinn.svg
     - Salad: https://commons.wikimedia.org/wiki/File:Romaine_lettuce.svg, https://commons.wikimedia.org/wiki/File:Iceberg_lettuce.svg
     - Pepper: https://commons.wikimedia.org/wiki/Category:SMART-Servier_Medical_Art_-_Food
