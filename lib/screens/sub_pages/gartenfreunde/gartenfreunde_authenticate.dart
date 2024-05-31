@@ -67,6 +67,7 @@ class _AuthenticateState extends State<Authenticate> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         bool userAlreadyExists =
@@ -88,7 +89,7 @@ class _AuthenticateState extends State<Authenticate> {
                         }
                       }
                     },
-                    child: const Text('Fortfahren'),
+                    child: const Text('Fortfahren', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),

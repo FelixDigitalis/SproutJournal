@@ -43,7 +43,7 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    hintStyle: TextStyle(color: primaryColor),
+                    hintStyle: TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
                     ),
@@ -142,6 +142,7 @@ class _RegisterState extends State<Register> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
@@ -155,7 +156,7 @@ class _RegisterState extends State<Register> {
                       }
                     }
                   },
-                  child: const Text('Registrieren'),
+                  child: const Text('Registrieren', style: TextStyle(color: Colors.white)),
                 ),
                 Text(error),
               ],

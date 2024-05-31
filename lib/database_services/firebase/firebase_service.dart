@@ -35,7 +35,8 @@ class FirebaseService {
         UserModel user = UserModel(
           uid: userDocument.id,
           email: userDocument.get('email'),
-          name: userDocument.get('name'),
+          firstname: userDocument.get('firstname'),
+          lastname: userDocument.get('lastname'),
         );
         return user;
       } else {

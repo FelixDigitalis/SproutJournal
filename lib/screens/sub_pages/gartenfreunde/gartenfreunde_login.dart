@@ -43,7 +43,7 @@ class _SignInState extends State<SignIn> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    hintStyle: TextStyle(color: primaryColor, fontSize: 18),
+                    hintStyle:  TextStyle(color: Colors.black, fontSize: 18),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
                     ),
@@ -88,6 +88,7 @@ class _SignInState extends State<SignIn> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       dynamic result = await _auth.signInWithEmailAndPassword(widget.email, password);
@@ -100,7 +101,7 @@ class _SignInState extends State<SignIn> {
                       }
                     }
                   },
-                  child: const Text('Einloggen'),
+                  child: const Text('Einloggen', style: TextStyle(color: Colors.white)),
                 ),
                 Text(
                   error,
