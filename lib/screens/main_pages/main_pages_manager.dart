@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/user_model.dart';
-import '../../../utils/log.dart';
+// import '../../../utils/log.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 import '../elements/bottom_bar_element.dart';
 import '../sub_pages/settings_page.dart';
@@ -31,7 +31,7 @@ class _PageManagerState extends State<PageManager> {
   final List<String> _titles = [
     'SproutJournal 🌱',
     'SproutJournal 🌱',
-    'Gartenfreunde',
+    'Gartenfreunde 🌱',
   ];
 
   @override
@@ -68,9 +68,9 @@ class _PageManagerState extends State<PageManager> {
               );
             },
           ),
-          if (user != null)
+          if (user != null && _selectedIndex == 2)
             IconButton(
-              icon: const Icon(Icons.logout, color: Colors.red),
+              icon: const Icon(Icons.logout, color: Colors.white),
               tooltip: 'Logout',
               onPressed: () async {
                 await _auth.signOut();
