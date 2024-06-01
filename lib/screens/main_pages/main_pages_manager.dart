@@ -54,6 +54,7 @@ class _PageManagerState extends State<PageManager> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(_appBarTitle,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).colorScheme.primary,
