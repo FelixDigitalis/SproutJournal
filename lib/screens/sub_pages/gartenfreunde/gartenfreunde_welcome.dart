@@ -4,16 +4,17 @@ import 'gartenfreunde_login.dart';
 import 'gartenfreunde_register.dart';
 import '../../../database_services/firebase/firebase_service.dart';
 
-class GartenfreundeAuthenticate extends StatefulWidget {
-  const GartenfreundeAuthenticate({super.key});
+class GartenfreundeWelcome extends StatefulWidget {
+  const GartenfreundeWelcome({super.key});
 
   @override
-  State<GartenfreundeAuthenticate> createState() =>
-      _GartenfreundeAuthenticateState();
+  State<GartenfreundeWelcome> createState() =>
+      _GartenfreundeWelcomeState();
 }
 
-class _GartenfreundeAuthenticateState extends State<GartenfreundeAuthenticate> {
+class _GartenfreundeWelcomeState extends State<GartenfreundeWelcome> {
   final _formKey = GlobalKey<FormState>();
+
 
   String email = '';
 

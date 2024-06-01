@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../models/user_model.dart';
+import '../../../utils/log.dart';
+import '../../../database_services/firebase/firebase_auth.dart';
 import '../elements/bottom_bar_element.dart';
 import '../sub_pages/settings_page.dart';
 import 'gartenfreunde_page.dart';
@@ -6,34 +10,52 @@ import 'journal_feed.dart';
 import 'library_feed.dart';
 
 class PageManager extends StatefulWidget {
-  const PageManager({super.key});
+  final int selectedIndex;
+  const PageManager({super.key, this.selectedIndex = 0});
+
   @override
   State<PageManager> createState() => _PageManagerState();
-
 }
 
 class _PageManagerState extends State<PageManager> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+  late String _appBarTitle;
+  final AuthService _auth = AuthService();
+
   final List<Widget> _widgetOptions = <Widget>[
     const JournalFeed(),
     const PlantFeed(),
     const GartenfreundePage(),
   ];
 
+  final List<String> _titles = [
+    'SproutJournal 🌱',
+    'SproutJournal 🌱',
+    'Gartenfreunde',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+    _appBarTitle = _titles[_selectedIndex];
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _appBarTitle = _titles[index];
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SproutJournal 🌱',
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w600)),
+        title: Text(_appBarTitle,
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
           IconButton(
@@ -45,7 +67,15 @@ class _PageManagerState extends State<PageManager> {
                 MaterialPageRoute(builder: (context) => const SettingsMenu()),
               );
             },
-          )
+          ),
+          if (user != null)
+            IconButton(
+              icon: const Icon(Icons.logout, color: Colors.red),
+              tooltip: 'Logout',
+              onPressed: () async {
+                await _auth.signOut();
+              },
+            ),
         ],
       ),
       body: Center(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 import 'package:sprout_journal/screens/main_pages/gartenfreunde_page.dart';
 
@@ -157,7 +158,7 @@ class _RegisterState extends State<Register> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const GartenfreundePage()));
+                                      const PageManager(selectedIndex: 2,)));
                         }
                       }
                     }

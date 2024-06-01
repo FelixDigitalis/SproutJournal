@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/gartenfreunde_page.dart';
+import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
@@ -44,7 +45,7 @@ class _SignInState extends State<SignIn> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    hintStyle:  TextStyle(color: Colors.black, fontSize: 18),
+                    hintStyle: const TextStyle(color: Colors.black, fontSize: 18),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
                     ),
@@ -97,7 +98,7 @@ class _SignInState extends State<SignIn> {
                         setState(() => error = 'Falsche Anmeldedaten');
                       } else {
                         if (mounted) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const GartenfreundePage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PageManager(selectedIndex: 2,)));
                         }
                       }
                     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/user_model.dart';
-import '../sub_pages/gartenfreunde/gartenfreunde_authenticate.dart';
+import '../sub_pages/gartenfreunde/gartenfreunde_welcome.dart';
 import '../../../utils/log.dart';
 
 class GartenfreundePage extends StatefulWidget {
@@ -25,7 +25,7 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
       final user = Provider.of<UserModel?>(context);
 
       if (user == null) {
-        return const GartenfreundeAuthenticate();
+        return const GartenfreundeWelcome();
       }
 
       final username = user.firstname;
@@ -47,18 +47,22 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
                       controller: _postController,
                       decoration: InputDecoration(
                         hintText: 'Was möchtest du teilen?',
-                        hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                        hintStyle:
+                            TextStyle(color: Theme.of(context).primaryColor),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 2.0),
+                              color: Theme.of(context).primaryColor,
+                              width: 2.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 2.0),
+                              color: Theme.of(context).primaryColor,
+                              width: 2.0),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor, width: 2.0),
+                              color: Theme.of(context).primaryColor,
+                              width: 2.0),
                         ),
                       ),
                       style: const TextStyle(color: Colors.black, fontSize: 18),
