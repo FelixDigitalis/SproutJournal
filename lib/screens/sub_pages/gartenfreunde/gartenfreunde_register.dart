@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    hintStyle: TextStyle(color: Colors.black),
+                    hintStyle: const TextStyle(color: Colors.black),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
                     ),

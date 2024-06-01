@@ -11,13 +11,16 @@ class Wrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Log().d("Wrapper started!");	  
-    final user = Provider.of<UserModel?>(context);
+    Log().d("Wrapper started!");
 
-    if (user == null) {
-      return const Authenticate();
-    } else {
-      return child;
+    try {
+      final user = Provider.of<UserModel?>(context);
+      if (user == null) {
+        return const GartenfreundeAuthenticate();
+      } else {}
+    } catch (e) {
+      Log().e("Error in Wrapper: $e");
     }
+    return child;
   }
 }

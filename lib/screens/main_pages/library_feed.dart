@@ -16,7 +16,7 @@ class _PlantFeedState extends State<PlantFeed> {
   @override
   void initState() {
     super.initState();
-    _plants = JsonManager().loadPlants(); // Load plants on init
+    _plants = JsonManager().loadPlants(); 
   }
 
   @override
@@ -33,8 +33,8 @@ class _PlantFeedState extends State<PlantFeed> {
             } else if (snapshot.hasData) {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Two items per row
-                  childAspectRatio: 1.0, // Makes each item a square
+                  crossAxisCount: 2, 
+                  childAspectRatio: 1.0, 
                 ),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {

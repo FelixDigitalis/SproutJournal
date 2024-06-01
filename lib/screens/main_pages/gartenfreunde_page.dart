@@ -15,75 +15,96 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
   final _postController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel?>(context);
+    try {
+      final user = Provider.of<UserModel?>(context);
 
-    if (user == null) {
-      return const Authenticate();
-    }
+      if (user == null) {
+        return const GartenfreundeAuthenticate();
+      }
 
-    final username = user.firstname;
+      final username = user.firstname;
 
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Hi $username 👋',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 20)),
-            const SizedBox(height: 20),
-            Row(children: [
-              TextField(
-                controller: _postController,
-                decoration: InputDecoration(
-                  hintText: 'Was möchtest du teilen?',
-                  hintStyle: TextStyle(color: Theme.of(context).primaryColor),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.0),
+      return Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Hi $username 👋',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 20)),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _postController,
+                      decoration: InputDecoration(
+                        hintText: 'Was möchtest du teilen?',
+                        hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 2.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor, width: 2.0),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
+                      maxLines: null,
+                    ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.0),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      // TODO: Implement the sharing functionality
+                      _postController.clear();
+                    },
+                    child: const Icon(Icons.send),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor, width: 2.0),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: Container(
+                  color: Colors.grey[200],
+                  child: Center(
+                    child: Text(
+                      'Feed',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
                   ),
                 ),
-                style: const TextStyle(color: Colors.black, fontSize: 18),
-                maxLines: null,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    // TODO:
-                    _postController.clear();
-                  },
-                  child: const Icon(Icons.abc)),
-            ]),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                color: Colors.grey[200],
-                child: Center(
-                  child: Text(
-                    'Feed',
-                    style: TextStyle(color: Colors.grey[600]),
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      Log().e('Error in GartenfreundePage build method: $e');
+      return Scaffold(
+        body: Center(
+          child: Text('Ein Fehler ist aufgetreten: $e'),
+        ),
+      );
+    }
   }
 
   @override
   void dispose() {
     _postController.dispose();
+    Log().d("GartenfreundePage disposed!");
     super.dispose();
   }
 }
