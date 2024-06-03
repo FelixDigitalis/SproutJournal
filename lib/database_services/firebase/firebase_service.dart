@@ -21,6 +21,7 @@ class FirebaseService {
     return await _userCollection.doc(uid).set({
       'email': email,
       'nickname': nickname,
+      'follows': [],
     });
   }
 
@@ -80,5 +81,51 @@ class FirebaseService {
       nicknames.add(doc.get('nickname'));
     }
     return nicknames;
+  }
+
+  // follow a user by nickname
+  Future<void> followUser(String nicknameToFollow) async {
+    try {
+      final QuerySnapshot result = await _userCollection
+          .where('nickname', isEqualTo: nicknameToFollow)
+          .limit(1)
+          .get();
+
+      if (result.docs.isEmpty) {
+        throw Exception('User with nickname $nicknameToFollow does not exist');
+      }
+
+      DocumentReference currentUserDoc = _userCollection.doc(uid);
+
+      await currentUserDoc.update({
+        'follows': FieldValue.arrayUnion([nicknameToFollow])
+      });
+    } catch (e) {
+      Log().e(e.toString());
+      throw Exception('Failed to follow user: $e');
+    }
+  }
+
+  // unfollow a user by nickname
+  Future<void> unfollowUser(String nicknameToUnfollow) async {
+    try {
+      final QuerySnapshot result = await _userCollection
+          .where('nickname', isEqualTo: nicknameToUnfollow)
+          .limit(1)
+          .get();
+
+      if (result.docs.isEmpty) {
+        throw Exception('User with nickname $nicknameToUnfollow does not exist');
+      }
+
+      DocumentReference currentUserDoc = _userCollection.doc(uid);
+
+      await currentUserDoc.update({
+        'follows': FieldValue.arrayRemove([nicknameToUnfollow])
+      });
+    } catch (e) {
+      Log().e(e.toString());
+      throw Exception('Failed to unfollow user: $e');
+    }
   }
 }
