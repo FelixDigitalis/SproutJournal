@@ -15,9 +15,12 @@ class FirebaseService {
 
   // add new user to user
   Future createUser(String email, String nickname) async {
+    if (await isNicknameTaken(nickname)) {
+      throw Exception('Nickname is already taken');
+    }
     return await _userCollection.doc(uid).set({
       'email': email,
-      'nickname' : nickname,
+      'nickname': nickname,
     });
   }
 
@@ -56,5 +59,12 @@ class FirebaseService {
           await _userCollection.where('email', isEqualTo: email).limit(1).get();
       return result.docs.isNotEmpty;
     }
+  }
+
+  // check if a nickname is already taken
+  Future<bool> isNicknameTaken(String nickname) async {
+    final QuerySnapshot result =
+        await _userCollection.where('nickname', isEqualTo: nickname).limit(1).get();
+    return result.docs.isNotEmpty;
   }
 }

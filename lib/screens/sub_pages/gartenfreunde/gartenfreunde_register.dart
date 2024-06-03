@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
+import '../../../database_services/firebase/firebase_service.dart';
 
 class Register extends StatefulWidget {
   final String email;
@@ -16,6 +17,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
+  final _fbService = FirebaseService();
   final _formKey = GlobalKey<FormState>();
 
   String password = '';
@@ -120,17 +122,21 @@ class _RegisterState extends State<Register> {
                       backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      dynamic result = await _auth.registerWithEmailAndPassword(
-                          widget.email, password, nickname);
-                      if (result == null) {
-                        setState(() => error = 'Registrieren fehlgeschlagen');
+                      if (await _fbService.isNicknameTaken(nickname)) {
+                        setState(() => error = 'Nickname bereits vergeben');
                       } else {
-                        if (mounted) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const PageManager(selectedIndex: 2,)));
+                        dynamic result = await _auth.registerWithEmailAndPassword(
+                            widget.email, password, nickname);
+                        if (result == null) {
+                          setState(() => error = 'Registrieren fehlgeschlagen');
+                        } else {
+                          if (mounted) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PageManager(selectedIndex: 2,)));
+                          }
                         }
                       }
                     }
