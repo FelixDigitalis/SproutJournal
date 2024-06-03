@@ -67,4 +67,18 @@ class FirebaseService {
         await _userCollection.where('nickname', isEqualTo: nickname).limit(1).get();
     return result.docs.isNotEmpty;
   }
+
+  // search nicknames
+  Future<List<String>> searchNicknames(String searchString) async {
+    final QuerySnapshot result = await _userCollection
+        .where('nickname', isGreaterThanOrEqualTo: searchString)
+        .where('nickname', isLessThanOrEqualTo: '$searchString\uf8ff')
+        .get();
+    
+    List<String> nicknames = [];
+    for (var doc in result.docs) {
+      nicknames.add(doc.get('nickname'));
+    }
+    return nicknames;
+  }
 }

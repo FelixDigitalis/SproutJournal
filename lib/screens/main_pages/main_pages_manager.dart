@@ -8,6 +8,7 @@ import '../sub_pages/settings_page.dart';
 import 'gartenfreunde_page.dart';
 import 'journal_feed.dart';
 import 'library_feed.dart';
+import '../sub_pages/gartenfreunde/gartenfreunde_user_search.dart';
 
 class PageManager extends StatefulWidget {
   final int selectedIndex;
@@ -69,7 +70,17 @@ class _PageManagerState extends State<PageManager> {
               );
             },
           ),
-          if (user != null && _selectedIndex == 2)
+          if (user != null && _selectedIndex == 2) ...[
+            IconButton(
+              icon: const Icon(Icons.search, color: Colors.white),
+              tooltip: 'Search',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GartenfreundeUserSearch()),
+                );
+              },
+            ),
             IconButton(
               icon: const Icon(Icons.logout, color: Colors.white),
               tooltip: 'Logout',
@@ -77,6 +88,7 @@ class _PageManagerState extends State<PageManager> {
                 await _auth.signOut();
               },
             ),
+          ],
         ],
       ),
       body: Center(
