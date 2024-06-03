@@ -19,8 +19,7 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
 
   String password = '';
-  String firstname = '';
-  String lastname = '';
+  String nickname = '';
   String error = '';
 
   @override
@@ -92,7 +91,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 20),
                 TextFormField(
                   decoration: InputDecoration(
-                    hintText: 'Vorname',
+                    hintText: 'Nickname',
                     hintStyle: TextStyle(color: primaryColor),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
@@ -107,38 +106,12 @@ class _RegisterState extends State<Register> {
                   style: const TextStyle(color: Colors.black),
                   validator: (val) {
                     if (val == null || val.isEmpty) {
-                      return 'Vornamen eingeben';
+                      return 'Nickname eingeben';
                     }
                     return null;
                   },
                   onChanged: (val) {
-                    setState(() => firstname = val);
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Nachname',
-                    hintStyle: TextStyle(color: primaryColor),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: primaryColor, width: 2.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primaryColor, width: 2.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: primaryColor, width: 2.0),
-                    ),
-                  ),
-                  style: const TextStyle(color: Colors.black),
-                  validator: (val) {
-                    if (val == null || val.isEmpty) {
-                      return 'Nachnamen eingeben';
-                    }
-                    return null;
-                  },
-                  onChanged: (val) {
-                    setState(() => lastname = val);
+                    setState(() => nickname = val);
                   },
                 ),
                 const SizedBox(height: 20),
@@ -148,7 +121,7 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       dynamic result = await _auth.registerWithEmailAndPassword(
-                          widget.email, password, firstname, lastname);
+                          widget.email, password, nickname);
                       if (result == null) {
                         setState(() => error = 'Registrieren fehlgeschlagen');
                       } else {

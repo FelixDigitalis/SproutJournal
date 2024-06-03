@@ -55,7 +55,7 @@ class AuthService {
 
   // register with email & password
   Future<UserModel?> registerWithEmailAndPassword(
-      String email, String password, String firstname, String lastname) async {
+      String email, String password, String nickname) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -64,7 +64,7 @@ class AuthService {
       // add user document in users collection
       if (user != null) {
         fbService = FirebaseService(uid: user.uid);
-        await fbService?.createUser(user.email!, firstname, lastname);
+        await fbService?.createUser(user.email!, nickname);
       }
 
       return _userFromFirebaseUser(user);

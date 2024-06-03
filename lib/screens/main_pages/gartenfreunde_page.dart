@@ -28,7 +28,7 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
         return const GartenfreundeWelcome();
       }
 
-      final username = user.firstname;
+      final username = user.nickname;
 
       return Scaffold(
         body: Padding(

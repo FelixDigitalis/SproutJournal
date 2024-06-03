@@ -14,11 +14,10 @@ class FirebaseService {
       FirebaseFirestore.instance.collection('users');
 
   // add new user to user
-  Future createUser(String email, String firstname, String lastname) async {
+  Future createUser(String email, String nickname) async {
     return await _userCollection.doc(uid).set({
       'email': email,
-      'firstname': firstname,
-      'lastname': lastname,
+      'nickname' : nickname,
     });
   }
 
@@ -35,8 +34,7 @@ class FirebaseService {
         UserModel user = UserModel(
           uid: userDocument.id,
           email: userDocument.get('email'),
-          firstname: userDocument.get('firstname'),
-          lastname: userDocument.get('lastname'),
+          nickname: userDocument.get('nickname'),
         );
         return user;
       } else {

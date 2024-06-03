@@ -2,19 +2,17 @@ class UserModel {
 
   final String uid;
   String email;
-  String firstname;
-  String lastname;
+  String nickname;
 
   UserModel({
     required this.uid,
     this.email = '',
-    this.firstname = '',
-    this.lastname = '',
+    this.nickname = '',
   });
 
   @override
   String toString() {
-    return 'User(uid: $uid, email: $email, firstname: $firstname, lastname: $lastname)';
+    return 'User(uid: $uid, email: $email, nickname: $nickname)';
   }
 
 }
