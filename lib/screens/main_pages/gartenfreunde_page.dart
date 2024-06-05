@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../models/user_model.dart';
 import '../sub_pages/gartenfreunde/gartenfreunde_welcome.dart';
 import '../../../utils/log.dart';
+import '../elements/gartenfreunde_posting_element.dart';
+import '../elements/gartenfreunde_feed_element.dart';
 
 class GartenfreundePage extends StatefulWidget {
   const GartenfreundePage({super.key});
@@ -12,8 +14,6 @@ class GartenfreundePage extends StatefulWidget {
 }
 
 class _GartenfreundePageState extends State<GartenfreundePage> {
-  final _postController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     try {
@@ -35,56 +35,10 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
                   style: TextStyle(
                       color: Theme.of(context).primaryColor, fontSize: 20)),
               const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _postController,
-                      decoration: InputDecoration(
-                        hintText: 'Was möchtest du teilen?',
-                        hintStyle:
-                            TextStyle(color: Theme.of(context).primaryColor),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2.0),
-                        ),
-                      ),
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                      maxLines: null,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      // TODO: Implement the sharing functionality
-                      _postController.clear();
-                    },
-                    child: const Icon(Icons.send),
-                  ),
-                ],
-              ),
+              const GartenfreundePostingElement(),
               const SizedBox(height: 20),
-              Expanded(
-                child: Container(
-                  color: Colors.grey[200],
-                  child: Center(
-                    child: Text(
-                      'Feed',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ),
-                ),
+              const Expanded(
+                child: GartenfreundeFeedElement(),
               ),
             ],
           ),
@@ -98,12 +52,5 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
         ),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    _postController.dispose();
-    Log().d("GartenfreundePage disposed!");
-    super.dispose();
   }
 }

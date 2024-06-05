@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../models/post_model.dart';
 import '../../models/user_model.dart';
 import '../../utils/log.dart';
 
@@ -161,5 +162,31 @@ class FirebaseService {
       throw Exception('Failed to delete post: $e');
     }
   }
-}
 
+  // fetch posts from followed users and the user itself
+  Future<List<PostModel>> getPostsFromFollowedUsers() async {
+    try {
+      DocumentSnapshot userDocument = await _userCollection.doc(uid).get();
+      if (!userDocument.exists) {
+        throw Exception('User does not exist');
+      }
+
+      List<String> followedNicknames = List<String>.from(userDocument.get('follows'));
+      followedNicknames.add(userDocument.get('nickname')); 
+
+      if (followedNicknames.isEmpty) {
+        return [];
+      }
+
+      QuerySnapshot postSnapshots = await _postCollection
+          .where('authorNickname', whereIn: followedNicknames)
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      return postSnapshots.docs.map((doc) => PostModel.fromFirestore(doc)).toList();
+    } catch (e) {
+      Log().e(e.toString());
+      throw Exception('Failed to fetch posts from followed users: $e');
+    }
+  }
+}
