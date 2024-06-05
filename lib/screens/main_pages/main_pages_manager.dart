@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/user_model.dart';
-// import '../../../utils/log.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 import '../elements/bottom_bar_element.dart';
 import '../sub_pages/settings_page.dart';
@@ -77,7 +76,7 @@ class _PageManagerState extends State<PageManager> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const GartenfreundeUserSearch()),
+                  MaterialPageRoute(builder: (context) => GartenfreundeUserSearch(user: user)),
                 );
               },
             ),

@@ -122,20 +122,31 @@ class _RegisterState extends State<Register> {
                       backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      if (await _fbService.isNicknameTaken(nickname)) {
-                        setState(() => error = 'Nickname bereits vergeben');
+                      bool nicknameTaken =
+                          await _fbService.isNicknameTaken(nickname);
+                      print('Nickname taken: $nicknameTaken'); // Debug print
+                      if (nicknameTaken) {
+                        setState(() {
+                          error = 'Nickname bereits vergeben';
+                        });
                       } else {
-                        dynamic result = await _auth.registerWithEmailAndPassword(
-                            widget.email, password, nickname);
+                        dynamic result =
+                            await _auth.registerWithEmailAndPassword(
+                                widget.email, password, nickname);
                         if (result == null) {
-                          setState(() => error = 'Registrieren fehlgeschlagen');
+                          setState(() {
+                            error = 'Registrieren fehlgeschlagen';
+                          });
                         } else {
                           if (mounted) {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PageManager(selectedIndex: 2,)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PageManager(
+                                  selectedIndex: 2,
+                                ),
+                              ),
+                            );
                           }
                         }
                       }
@@ -144,7 +155,10 @@ class _RegisterState extends State<Register> {
                   child: const Text('Registrieren',
                       style: TextStyle(color: Colors.white)),
                 ),
-                Text(error),
+                Text(
+                  error,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ],
             ),
           ),

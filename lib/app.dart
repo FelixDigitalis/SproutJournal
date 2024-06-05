@@ -17,6 +17,7 @@ class App extends StatelessWidget {
         StreamProvider<UserModel?>.value(
           value: AuthService().user,
           initialData: null,
+          catchError: (_, __) => null,
         ),
       ],
       child: MaterialApp(
@@ -32,7 +33,9 @@ class App extends StatelessWidget {
             error: Colors.red,
             onError: Colors.white,
             surface: Colors.lightGreen,
-            onSurface: Colors.white,
+            onSurface: Colors.black,
+            background: Colors.white,
+            onBackground: Colors.black,
           ),
           scaffoldBackgroundColor: Colors.white,
         ),

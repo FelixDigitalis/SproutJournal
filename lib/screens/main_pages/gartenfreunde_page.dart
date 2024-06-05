@@ -15,11 +15,6 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
   final _postController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     try {
       final user = Provider.of<UserModel?>(context);

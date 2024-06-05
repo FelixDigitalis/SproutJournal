@@ -39,6 +39,7 @@ class FirebaseService {
           uid: userDocument.id,
           email: userDocument.get('email'),
           nickname: userDocument.get('nickname'),
+          followedNicknames: List<String>.from(userDocument.get('follows')),
         );
         return user;
       } else {
@@ -86,15 +87,6 @@ class FirebaseService {
   // follow a user by nickname
   Future<void> followUser(String nicknameToFollow) async {
     try {
-      final QuerySnapshot result = await _userCollection
-          .where('nickname', isEqualTo: nicknameToFollow)
-          .limit(1)
-          .get();
-
-      if (result.docs.isEmpty) {
-        throw Exception('User with nickname $nicknameToFollow does not exist');
-      }
-
       DocumentReference currentUserDoc = _userCollection.doc(uid);
 
       await currentUserDoc.update({

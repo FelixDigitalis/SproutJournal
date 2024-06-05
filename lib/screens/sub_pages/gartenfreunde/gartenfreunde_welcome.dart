@@ -21,7 +21,6 @@ class _GartenfreundeWelcomeState extends State<GartenfreundeWelcome> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    Log().d("Authenticating user");
 
     return Scaffold(
       body: Container(
@@ -30,7 +29,7 @@ class _GartenfreundeWelcomeState extends State<GartenfreundeWelcome> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 5),
-            Text('Willkommen bei Gartenfreunde',
+            Text('Willkommen!',
                 style: TextStyle(
                     color: primaryColor,
                     fontSize: 24,
