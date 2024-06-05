@@ -12,14 +12,16 @@ class GartenfreundeUserSearch extends StatefulWidget {
 }
 
 class GartenfreundeUserSearchState extends State<GartenfreundeUserSearch> {
-  final FirebaseService _fbService = FirebaseService();
+  late FirebaseService _fbService;
+  late String uid;
   String searchQuery = '';
   List<String> searchResults = [];
 
   @override
   void initState() {
     super.initState();
-    Log().d('GartenfreundeUserSearchState.initState');
+     uid = widget.user.uid;
+     _fbService = FirebaseService(uid: uid);
     _initializeSearch();
   }
 
@@ -54,7 +56,11 @@ class GartenfreundeUserSearchState extends State<GartenfreundeUserSearch> {
     Log().d(widget.user.toString());
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Benutzer suchen'),
+        title: const Text('Benutzer suchen',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.white)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
@@ -90,7 +96,8 @@ class GartenfreundeUserSearchState extends State<GartenfreundeUserSearch> {
                 itemCount: searchResults.length,
                 itemBuilder: (context, index) {
                   String nickname = searchResults[index];
-                  bool isFollowed = widget.user.followedNicknames.contains(nickname);
+                  bool isFollowed =
+                      widget.user.followedNicknames.contains(nickname);
                   return ListTile(
                     title: Text(
                       nickname,

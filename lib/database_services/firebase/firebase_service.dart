@@ -65,8 +65,10 @@ class FirebaseService {
 
   // check if a nickname is already taken
   Future<bool> isNicknameTaken(String nickname) async {
-    final QuerySnapshot result =
-        await _userCollection.where('nickname', isEqualTo: nickname).limit(1).get();
+    final QuerySnapshot result = await _userCollection
+        .where('nickname', isEqualTo: nickname)
+        .limit(1)
+        .get();
     return result.docs.isNotEmpty;
   }
 
@@ -76,7 +78,7 @@ class FirebaseService {
         .where('nickname', isGreaterThanOrEqualTo: searchString)
         .where('nickname', isLessThanOrEqualTo: '$searchString\uf8ff')
         .get();
-    
+
     List<String> nicknames = [];
     for (var doc in result.docs) {
       nicknames.add(doc.get('nickname'));
@@ -87,6 +89,15 @@ class FirebaseService {
   // follow a user by nickname
   Future<void> followUser(String nicknameToFollow) async {
     try {
+      final QuerySnapshot result = await _userCollection
+          .where('nickname', isEqualTo: nicknameToFollow)
+          .limit(1)
+          .get();
+      if (result.docs.isEmpty) {
+        throw Exception('User with nickname $nicknameToFollow does not exist');
+      }
+      Log().i('HI');
+
       DocumentReference currentUserDoc = _userCollection.doc(uid);
 
       await currentUserDoc.update({
@@ -107,7 +118,8 @@ class FirebaseService {
           .get();
 
       if (result.docs.isEmpty) {
-        throw Exception('User with nickname $nicknameToUnfollow does not exist');
+        throw Exception(
+            'User with nickname $nicknameToUnfollow does not exist');
       }
 
       DocumentReference currentUserDoc = _userCollection.doc(uid);

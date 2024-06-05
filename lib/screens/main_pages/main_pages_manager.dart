@@ -56,11 +56,11 @@ class _PageManagerState extends State<PageManager> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(_appBarTitle,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.white)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(Icons.settings, color: Colors.white),
             tooltip: 'Settings',
             onPressed: () {
               Navigator.push(
@@ -76,7 +76,9 @@ class _PageManagerState extends State<PageManager> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => GartenfreundeUserSearch(user: user)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          GartenfreundeUserSearch(user: user)),
                 );
               },
             ),

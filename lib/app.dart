@@ -34,8 +34,6 @@ class App extends StatelessWidget {
             onError: Colors.white,
             surface: Colors.lightGreen,
             onSurface: Colors.black,
-            background: Colors.white,
-            onBackground: Colors.black,
           ),
           scaffoldBackgroundColor: Colors.white,
         ),
