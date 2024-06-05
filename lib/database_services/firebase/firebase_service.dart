@@ -12,6 +12,8 @@ class FirebaseService {
   // users collection
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('users');
+  final CollectionReference _postCollection =
+      FirebaseFirestore.instance.collection('posts');
 
   // add new user to user
   Future createUser(String email, String nickname) async {
@@ -96,8 +98,6 @@ class FirebaseService {
       if (result.docs.isEmpty) {
         throw Exception('User with nickname $nicknameToFollow does not exist');
       }
-      Log().i('HI');
-
       DocumentReference currentUserDoc = _userCollection.doc(uid);
 
       await currentUserDoc.update({
@@ -132,4 +132,34 @@ class FirebaseService {
       throw Exception('Failed to unfollow user: $e');
     }
   }
+
+  // add a new post
+  Future<void> addPost(String content) async {
+    try {
+      await _postCollection.add({
+        'uid': uid,
+        'content': content,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      Log().e(e.toString());
+      throw Exception('Failed to add post: $e');
+    }
+  }
+
+  // delete a post by post ID
+  Future<void> deletePost(String postId) async {
+    try {
+      DocumentSnapshot postSnapshot = await _postCollection.doc(postId).get();
+      if (postSnapshot.exists && postSnapshot.get('uid') == uid) {
+        await _postCollection.doc(postId).delete();
+      } else {
+        throw Exception('Post does not exist or you do not have permission to delete it');
+      }
+    } catch (e) {
+      Log().e(e.toString());
+      throw Exception('Failed to delete post: $e');
+    }
+  }
 }
+

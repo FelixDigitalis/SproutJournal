@@ -22,13 +22,6 @@ class GartenfreundeUserSearchState extends State<GartenfreundeUserSearch> {
     super.initState();
      uid = widget.user.uid;
      _fbService = FirebaseService(uid: uid);
-    _initializeSearch();
-  }
-
-  Future<void> _initializeSearch() async {
-    setState(() {
-      // Initialize search with user's followed nicknames or other data if needed
-    });
   }
 
   void _searchNicknames(String query) async {
