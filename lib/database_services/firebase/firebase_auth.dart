@@ -80,7 +80,7 @@ class AuthService {
       return await _auth.signOut();
     } catch (e) {
       Log().e(e.toString());
-      return null;
+      return;
     }
   }
 }

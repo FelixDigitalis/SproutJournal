@@ -8,10 +8,12 @@ class GartenfreundePostingElement extends StatefulWidget {
   const GartenfreundePostingElement({super.key});
 
   @override
-  _GartenfreundePostingElementState createState() => _GartenfreundePostingElementState();
+  GartenfreundePostingElementState createState() =>
+      GartenfreundePostingElementState();
 }
 
-class _GartenfreundePostingElementState extends State<GartenfreundePostingElement> {
+class GartenfreundePostingElementState
+    extends State<GartenfreundePostingElement> {
   final _postController = TextEditingController();
 
   @override
@@ -19,7 +21,7 @@ class _GartenfreundePostingElementState extends State<GartenfreundePostingElemen
     final user = Provider.of<UserModel?>(context);
 
     if (user == null) {
-      return const Center(child: Text('Please log in to post.'));
+      return const Center(child: Text('Fehler. Bitte logge dich ein.'));
     }
 
     return Row(
@@ -55,18 +57,12 @@ class _GartenfreundePostingElementState extends State<GartenfreundePostingElemen
               try {
                 await FirebaseService(uid: user.uid).addPost(content);
                 _postController.clear();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Post added successfully!')),
-                );
               } catch (e) {
                 Log().e('Failed to add post: $e');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Failed to add post: $e')),
-                );
               }
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Post content cannot be empty.')),
+                const SnackBar(content: Text('Gebe eine Nachricht ein!')),
               );
             }
           },
@@ -79,7 +75,6 @@ class _GartenfreundePostingElementState extends State<GartenfreundePostingElemen
   @override
   void dispose() {
     _postController.dispose();
-    Log().d("GartenfreundePostingElement disposed!");
     super.dispose();
   }
 }

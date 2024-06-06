@@ -24,7 +24,7 @@ class FirebaseService {
     return await _userCollection.doc(uid).set({
       'email': email,
       'nickname': nickname,
-      'follows': [],
+      'follows': [nickname],
     });
   }
 
@@ -135,18 +135,26 @@ class FirebaseService {
   }
 
   // add a new post
-  Future<void> addPost(String content) async {
-    try {
-      await _postCollection.add({
-        'uid': uid,
-        'content': content,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      Log().e(e.toString());
-      throw Exception('Failed to add post: $e');
+Future<void> addPost(String content) async {
+  try {
+    // Fetch the user to get the nickname
+    UserModel? user = await getUser();
+    if (user == null) {
+      throw Exception('User does not exist');
     }
+
+    await _postCollection.add({
+      'uid': uid,
+      'content': content,
+      'nickname': user.nickname, 
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  } catch (e) {
+    Log().e(e.toString());
+    throw Exception('Failed to add post: $e');
   }
+}
+
 
   // delete a post by post ID
   Future<void> deletePost(String postId) async {
@@ -164,29 +172,31 @@ class FirebaseService {
   }
 
   // fetch posts from followed users and the user itself
-  Future<List<PostModel>> getPostsFromFollowedUsers() async {
-    try {
-      DocumentSnapshot userDocument = await _userCollection.doc(uid).get();
-      if (!userDocument.exists) {
-        throw Exception('User does not exist');
-      }
-
-      List<String> followedNicknames = List<String>.from(userDocument.get('follows'));
-      followedNicknames.add(userDocument.get('nickname')); 
-
-      if (followedNicknames.isEmpty) {
-        return [];
-      }
-
-      QuerySnapshot postSnapshots = await _postCollection
-          .where('authorNickname', whereIn: followedNicknames)
-          .orderBy('timestamp', descending: true)
-          .get();
-
-      return postSnapshots.docs.map((doc) => PostModel.fromFirestore(doc)).toList();
-    } catch (e) {
-      Log().e(e.toString());
-      throw Exception('Failed to fetch posts from followed users: $e');
+Future<List<PostModel>> getPostsFromFollowedUsers() async {
+  try {
+    DocumentSnapshot userDocument = await _userCollection.doc(uid).get();
+    if (!userDocument.exists) {
+      throw Exception('User does not exist');
     }
+
+    List<String> followedNicknames = List<String>.from(userDocument.get('follows'));
+    followedNicknames.add(userDocument.get('nickname')); 
+
+    if (followedNicknames.isEmpty) {
+      return [];
+    }
+
+    // Ensure that the field name matches the Firestore document field
+    QuerySnapshot postSnapshots = await _postCollection
+        .where('nickname', whereIn: followedNicknames)
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    return postSnapshots.docs.map((doc) => PostModel.fromFirestore(doc)).toList();
+  } catch (e) {
+    Log().e(e.toString());
+    throw Exception('Failed to fetch posts from followed users: $e');
   }
+}
+
 }

@@ -30,8 +30,11 @@ class _RegisterState extends State<Register> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Anmelden',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+        title: Text('Anmelden',
+            style: TextStyle(
+                color: primaryColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Container(
@@ -124,7 +127,6 @@ class _RegisterState extends State<Register> {
                     if (_formKey.currentState?.validate() ?? false) {
                       bool nicknameTaken =
                           await _fbService.isNicknameTaken(nickname);
-                      print('Nickname taken: $nicknameTaken'); // Debug print
                       if (nicknameTaken) {
                         setState(() {
                           error = 'Nickname bereits vergeben';

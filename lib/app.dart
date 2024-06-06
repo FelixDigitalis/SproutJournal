@@ -4,6 +4,7 @@ import 'utils/log.dart';
 import 'models/user_model.dart';
 import 'database_services/firebase/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'services/post_notifer.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,6 +20,7 @@ class App extends StatelessWidget {
           initialData: null,
           catchError: (_, __) => null,
         ),
+        ChangeNotifierProvider(create: (_) => PostNotifier()),
       ],
       child: MaterialApp(
         title: 'SproutJournal',

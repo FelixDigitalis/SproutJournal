@@ -27,10 +27,11 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Einloggen',
+        title: Text('Einloggen',
             style: TextStyle(
+                color: primaryColor,
                 fontSize: 24,
-                fontWeight: FontWeight.w600)),
+                fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Container(
@@ -44,7 +45,8 @@ class _SignInState extends State<SignIn> {
                   decoration: InputDecoration(
                     hintText: widget.email,
                     enabled: false,
-                    hintStyle: const TextStyle(color: Colors.black, fontSize: 18),
+                    hintStyle:
+                        const TextStyle(color: Colors.black, fontSize: 18),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: primaryColor, width: 2.0),
                     ),
@@ -89,20 +91,28 @@ class _SignInState extends State<SignIn> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      dynamic result = await _auth.signInWithEmailAndPassword(widget.email, password);
+                      dynamic result = await _auth.signInWithEmailAndPassword(
+                          widget.email, password);
                       if (result == null) {
                         setState(() => error = 'Falsche Anmeldedaten');
                       } else {
                         if (mounted) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PageManager(selectedIndex: 2,)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PageManager(
+                                        selectedIndex: 2,
+                                      )));
                         }
                       }
                     }
                   },
-                  child: const Text('Einloggen', style: TextStyle(color: Colors.white)),
+                  child: const Text('Einloggen',
+                      style: TextStyle(color: Colors.white)),
                 ),
                 Text(
                   error,
