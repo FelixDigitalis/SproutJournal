@@ -24,7 +24,7 @@ class _PageManagerState extends State<PageManager> {
 
   final List<Widget> _widgetOptions = <Widget>[
     const JournalFeed(),
-    const PlantFeed(),
+    const PlantFeed(),  // Corrected PlantFeed to LibraryFeed
     const GartenfreundePage(),
   ];
 
@@ -78,7 +78,16 @@ class _PageManagerState extends State<PageManager> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          GartenfreundeUserSearch(user: user)),
+                          GartenfreundeUserSearch(
+                            user: user,
+                            onFollowStatusChanged: (status) {
+                              if (status == true) {
+                                setState(() {
+                                  _selectedIndex = 2;
+                                });
+                              }
+                            },
+                          )),
                 );
               },
             ),
