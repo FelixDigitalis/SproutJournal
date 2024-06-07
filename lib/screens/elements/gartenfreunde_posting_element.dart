@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/user_model.dart';
-import '../../database_services/firebase/firebase_service.dart';
 import '../../../utils/log.dart';
+import '../../services/post_notifer.dart';
+
 
 class GartenfreundePostingElement extends StatefulWidget {
   const GartenfreundePostingElement({super.key});
@@ -55,7 +56,8 @@ class GartenfreundePostingElementState
             final content = _postController.text;
             if (content.isNotEmpty) {
               try {
-                await FirebaseService(uid: user.uid).addPost(content);
+                final postNotifier = Provider.of<PostNotifier>(context, listen: false);
+                await postNotifier.addPost(user.uid, content);
                 _postController.clear();
               } catch (e) {
                 Log().e('Failed to add post: $e');

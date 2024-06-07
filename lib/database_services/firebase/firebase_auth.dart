@@ -22,7 +22,7 @@ class AuthService {
         await Future.delayed(delayDuration);
       }
     }
-    Log().e("User is null or not yet available");
+    // Log().e("User is null or not yet available");
     return null;
   }
 

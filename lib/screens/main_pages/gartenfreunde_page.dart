@@ -5,6 +5,7 @@ import '../sub_pages/gartenfreunde/gartenfreunde_welcome.dart';
 import '../../../utils/log.dart';
 import '../elements/gartenfreunde_posting_element.dart';
 import '../elements/gartenfreunde_feed_element.dart';
+import '../../services/post_notifer.dart';
 
 class GartenfreundePage extends StatefulWidget {
   const GartenfreundePage({super.key});
@@ -26,22 +27,25 @@ class _GartenfreundePageState extends State<GartenfreundePage> {
 
       final username = user.nickname;
 
-      return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Hi $username 👋',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor, fontSize: 20)),
-              const SizedBox(height: 20),
-              const GartenfreundePostingElement(),
-              const SizedBox(height: 20),
-              const Expanded(
-                child: GartenfreundeFeedElement(),
-              ),
-            ],
+      return ChangeNotifierProvider(
+        create: (_) => PostNotifier(),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Hi $username 👋',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 20)),
+                const SizedBox(height: 20),
+                const GartenfreundePostingElement(),
+                const SizedBox(height: 20),
+                const Expanded(
+                  child: GartenfreundeFeedElement(),
+                ),
+              ],
+            ),
           ),
         ),
       );
