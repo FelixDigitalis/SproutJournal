@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
@@ -143,7 +142,7 @@ class _RegisterState extends State<Register> {
                           });
                         } else {
                           if (mounted) {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const PageManager(

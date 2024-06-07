@@ -10,10 +10,11 @@ class AuthService {
   // create custom user obj based on firebase User
   Future<UserModel?> _userFromFirebaseUser(User? fbUser) async {
     if (fbUser != null) {
-      fbService = FirebaseService(uid: fbUser.uid);
-      UserModel? user = await fbService?.getUser();
+      FirebaseService fbService = FirebaseService(uid: fbUser.uid);
+      UserModel? user = await fbService.getUser();
       return user;
     }
+    Log().e("User is null");
     return null;
   }
 
@@ -66,10 +67,9 @@ class AuthService {
         fbService = FirebaseService(uid: user.uid);
         await fbService?.createUser(user.email!, nickname);
       }
-
-      return _userFromFirebaseUser(user);
+      return await _userFromFirebaseUser(user);
     } catch (e) {
-      Log().e(e.toString());
+      Log().e("registerWithEmailAndPassword: ${e.toString()}");
       return null;
     }
   }
