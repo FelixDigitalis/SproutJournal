@@ -7,20 +7,12 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseService? fbService;
 
+  // create custom user obj based on firebase User
   Future<UserModel?> _userFromFirebaseUser(User? fbUser) async {
-    // HACK: bc after registration the user is not yet available
     if (fbUser != null) {
       FirebaseService fbService = FirebaseService(uid: fbUser.uid);
-      const int maxAttempts = 5;
-      const Duration delayDuration = Duration(milliseconds: 250);
-
-      for (int attempt = 0; attempt < maxAttempts; attempt++) {
-        UserModel? user = await fbService.getUser();
-        if (user != null) {
-          return user;
-        }
-        await Future.delayed(delayDuration);
-      }
+      UserModel? user = await fbService.getUser();
+      return user;
     }
     // Log().e("User is null or not yet available");
     return null;
