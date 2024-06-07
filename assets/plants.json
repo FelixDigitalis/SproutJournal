@@ -1,0 +1,67 @@
+{
+    "Lettuce": {
+        "id" : 1,
+        "GermanName": "Salat",
+        "EnglishName": "Lettuce",
+        "GerminationTemperatureMin": 5,
+        "GerminationTemperatureMax": 10,
+        "GerminationDurationMin": 8,
+        "GerminationDurationMax": 10,
+        "SowingDepthMin": 0.5,
+        "SowingDepthMax": 1.0,
+        "MinSowBy": 3,
+        "MaxSowBy": 7
+    },
+    "Cucumber": {
+        "id" : 2,
+        "GermanName": "Gurke",
+        "EnglishName": "Cucumber",
+        "GerminationTemperatureMin": 20,
+        "GerminationTemperatureMax": 25,
+        "GerminationDurationMin": 10,
+        "GerminationDurationMax": 12,
+        "SowingDepthMin": 2.0,
+        "SowingDepthMax": 3.0,
+        "MinSowBy": 4,
+        "MaxSowBy": 6
+    },
+    "Pumpkin": {
+        "id" : 3,
+        "GermanName": "Kürbis",
+        "EnglishName": "Pumpkin",
+        "GerminationTemperatureMin": 18,
+        "GerminationTemperatureMax": 22,
+        "GerminationDurationMin": 8,
+        "GerminationDurationMax": 12,
+        "SowingDepthMin": 2.5,
+        "SowingDepthMax": 2.5,
+        "MinSowBy": 4,
+        "MaxSowBy": 6
+    },
+    "Tomato": {
+        "id" : 4,
+        "GermanName": "Tomate",
+        "EnglishName": "Tomato",
+        "GerminationTemperatureMin": 20,
+        "GerminationTemperatureMax": 25,
+        "GerminationDurationMin": 10,
+        "GerminationDurationMax": 15,
+        "SowingDepthMin": 0.5,
+        "SowingDepthMax": 1.0,
+        "MinSowBy": 3,
+        "MaxSowBy": 4
+    },
+    "Pepper": {
+        "id" : 5,
+        "GermanName": "Paprika",
+        "EnglishName": "Pepper",
+        "GerminationTemperatureMin": 20,
+        "GerminationTemperatureMax": 25,
+        "GerminationDurationMin": 10,
+        "GerminationDurationMax": 14,
+        "SowingDepthMin": 1.0,
+        "SowingDepthMax": 1.0,
+        "MinSowBy": 1,
+        "MaxSowBy": 4
+    }
+}
