@@ -40,7 +40,7 @@ class GartenfreundeFeedElementState extends State<GartenfreundeFeedElement> {
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
                 child: ListTile(
                   title: Text(post.content),
-                  subtitle: Text('Von: ${post.authorName}'),
+                  subtitle: Text('Von ${post.authorName} am ${post.timestamp}'),
                 ),
               );
             },
