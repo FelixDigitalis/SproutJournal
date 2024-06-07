@@ -24,6 +24,32 @@ class _RegisterState extends State<Register> {
   String nickname = '';
   String error = '';
 
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Dein Profil wird erstellt..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _hideLoadingDialog(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
@@ -126,9 +152,11 @@ class _RegisterState extends State<Register> {
                       backgroundColor: Theme.of(context).colorScheme.surface),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
+                      _showLoadingDialog(context); 
                       bool nicknameTaken =
                           await _fbService.isNicknameTaken(nickname);
                       if (nicknameTaken) {
+                        _hideLoadingDialog(context); 
                         setState(() {
                           error = 'Nickname bereits vergeben';
                         });
@@ -136,6 +164,7 @@ class _RegisterState extends State<Register> {
                         dynamic result =
                             await _auth.registerWithEmailAndPassword(
                                 widget.email, password, nickname);
+                        _hideLoadingDialog(context); 
                         if (result == null) {
                           setState(() {
                             error = 'Registrieren fehlgeschlagen';
