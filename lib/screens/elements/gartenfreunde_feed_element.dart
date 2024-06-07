@@ -38,9 +38,22 @@ class GartenfreundeFeedElementState extends State<GartenfreundeFeedElement> {
               final post = posts[index];
               return Card(
                 margin: const EdgeInsets.symmetric(vertical: 10.0),
-                child: ListTile(
-                  title: Text(post.content),
-                  subtitle: Text('Von ${post.authorName} am ${post.timestamp}'),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(
+                      post.content,
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      'Von ${post.authorName} am ${post.timestamp}',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
                 ),
               );
             },

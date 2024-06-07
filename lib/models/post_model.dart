@@ -18,7 +18,7 @@ class PostModel {
     final data = doc.data() as Map<String, dynamic>;
     Timestamp firestoreTimestamp = data['timestamp'] as Timestamp;
     DateTime dateTime = firestoreTimestamp.toDate();
-    String formattedTimestamp = DateFormat('dd.MM.yyyy HH:mm:ss').format(dateTime.toLocal());
+    String formattedTimestamp = DateFormat('dd.MM.yy \'um\' HH:mm').format(dateTime.toLocal());
 
     return PostModel(
       id: doc.id,

@@ -148,17 +148,22 @@ class PlantJournalPageState extends State<PlantJournalPage> {
     );
   }
 
-    AppBar _buildAppBar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
+        onPressed: () {
+          Navigator.pop(context, hasDateBeenUpdated);
+        },
+      ),
       actions: [
         IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () {
-              // InventoryManager.instance.deletePlant(dbUUID);
-              _showDeletePlantDialog(context);
-              // Navigator.pop(context, true);
-            }),
+          icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.onPrimary),
+          onPressed: () {
+            _showDeletePlantDialog(context);
+          },
+        ),
       ],
     );
   }
@@ -184,8 +189,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
               },
               child: Text(
                 'Abbrechen',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
             TextButton(

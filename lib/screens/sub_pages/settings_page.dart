@@ -11,8 +11,11 @@ class _SettingsMenuState extends State<SettingsMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Einstellungen',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
+        title: Text('Einstellungen',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onPrimary)),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: ListView(
