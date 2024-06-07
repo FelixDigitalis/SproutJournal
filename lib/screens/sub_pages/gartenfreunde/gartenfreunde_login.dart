@@ -105,7 +105,7 @@ class _LoginState extends State<Login> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const PageManager(
+                                  builder: (context) => const MainPagesManager(
                                         selectedIndex: 2,
                                       )));
                         }

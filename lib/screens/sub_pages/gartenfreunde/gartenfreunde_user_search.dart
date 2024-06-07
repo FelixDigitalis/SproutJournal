@@ -5,9 +5,8 @@ import '../../../utils/log.dart';
 
 class GartenfreundeUserSearch extends StatefulWidget {
   final UserModel user;
-  final Function(bool) onFollowStatusChanged;
 
-  const GartenfreundeUserSearch({required this.user, required this.onFollowStatusChanged, super.key});
+  const GartenfreundeUserSearch({required this.user, super.key});
 
   @override
   GartenfreundeUserSearchState createState() => GartenfreundeUserSearchState();
@@ -51,10 +50,14 @@ class GartenfreundeUserSearchState extends State<GartenfreundeUserSearch> {
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
     Log().d(widget.user.toString());
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, hasFollowStatusChanged);
-        return false;
+    return PopScope(
+      // https://docs.flutter.dev/release/breaking-changes/android-predictive-back
+      canPop: false,
+      onPopInvoked: (bool hasPoped) {
+        if (!hasPoped) {
+          hasPoped = true;
+          Navigator.pop(context, hasFollowStatusChanged);
+        }
       },
       child: Scaffold(
         appBar: AppBar(

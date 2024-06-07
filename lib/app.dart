@@ -40,7 +40,7 @@ class App extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,
-        home: const PageManager(),
+        home: const MainPagesManager(),
       ),
     );
   }

@@ -174,7 +174,7 @@ class _RegisterState extends State<Register> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const PageManager(
+                                builder: (context) => const MainPagesManager(
                                   selectedIndex: 2,
                                 ),
                               ),

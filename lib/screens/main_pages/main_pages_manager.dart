@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sprout_journal/utils/log.dart';
 import '../../../models/user_model.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 import '../elements/bottom_bar_element.dart';
@@ -9,36 +10,43 @@ import 'journal_feed.dart';
 import 'library_feed.dart';
 import '../sub_pages/gartenfreunde/gartenfreunde_user_search.dart';
 
-class PageManager extends StatefulWidget {
+class MainPagesManager extends StatefulWidget {
+  /* Class that manages all pages that can be reached by the main bottom bar */
   final int selectedIndex;
-  const PageManager({super.key, this.selectedIndex = 0});
+  const MainPagesManager({super.key, this.selectedIndex = 0});
 
   @override
-  State<PageManager> createState() => _PageManagerState();
+  State<MainPagesManager> createState() => _MainPagesManagerState();
 }
 
-class _PageManagerState extends State<PageManager> {
+class _MainPagesManagerState extends State<MainPagesManager> {
   late int _selectedIndex;
   late String _appBarTitle;
   final AuthService _auth = AuthService();
 
-  final List<Widget> _widgetOptions = <Widget>[
-    const JournalFeed(),
-    const PlantFeed(),  // Corrected PlantFeed to LibraryFeed
-    const GartenfreundePage(),
-  ];
-
-  final List<String> _titles = [
-    'SproutJournal 🌱',
-    'SproutJournal 🌱',
-    'Gartenfreunde 🌱',
-  ];
+  late List<Widget> _widgetOptions;
+  late List<String> _titles;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
     _appBarTitle = _titles[_selectedIndex];
+    _initWidgetOptions();
+  }
+
+  void _initWidgetOptions() {
+    _widgetOptions = <Widget>[
+      const JournalFeed(),
+      const PlantFeed(),
+      GartenfreundePage(key: UniqueKey()), // Add a unique key
+    ];
+
+    _titles = [
+      'SproutJournal 🌱',
+      'SproutJournal 🌱',
+      'Gartenfreunde 🌱',
+    ];
   }
 
   void _onItemTapped(int index) {
@@ -56,7 +64,10 @@ class _PageManagerState extends State<PageManager> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(_appBarTitle,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Colors.white)),
+            style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.white)),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: <Widget>[
           IconButton(
@@ -73,22 +84,23 @@ class _PageManagerState extends State<PageManager> {
             IconButton(
               icon: const Icon(Icons.search, color: Colors.white),
               tooltip: 'Search',
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                Object? followStatusChanged = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          GartenfreundeUserSearch(
-                            user: user,
-                            onFollowStatusChanged: (status) {
-                              if (status == true) {
-                                setState(() {
-                                  _selectedIndex = 2;
-                                });
-                              }
-                            },
-                          )),
+                    builder: (context) => GartenfreundeUserSearch(
+                      user: user,
+                    ),
+                  ),
                 );
+                if (followStatusChanged != null) {
+                  Log().d("Follow status has changed");
+                  setState(() {
+                    // Refresh the feed by updating the key
+                    _widgetOptions[2] = GartenfreundePage(key: UniqueKey());
+                    _selectedIndex = 2;
+                  });
+                }
               },
             ),
             IconButton(

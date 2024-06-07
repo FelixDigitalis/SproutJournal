@@ -142,7 +142,7 @@ class PlantDescriptionPage extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => const PageManager(),
+                    builder: (context) => const MainPagesManager(),
                   ),
                 );
               },
