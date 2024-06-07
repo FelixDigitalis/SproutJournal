@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
@@ -30,12 +31,13 @@ class _RegisterState extends State<Register> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Anmelden',
+        title: Text('Registrieren',
             style: TextStyle(
-                color: primaryColor,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: IconThemeData(color: Colors.white), // This sets the back arrow color to white
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -122,7 +124,7 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary),
+                      backgroundColor: Theme.of(context).colorScheme.surface),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       bool nicknameTaken =

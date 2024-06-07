@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:sprout_journal/screens/main_pages/main_pages_manager.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
 
-class SignIn extends StatefulWidget {
+class Login extends StatefulWidget {
   final String email;
 
-  const SignIn({
+  const Login({
     super.key,
     required this.email,
   });
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Login> createState() => _LoginState();
 }
 
-class _SignInState extends State<SignIn> {
+class _LoginState extends State<Login> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -27,12 +27,13 @@ class _SignInState extends State<SignIn> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Einloggen',
+        title: const Text('Einloggen',
             style: TextStyle(
-                color: primaryColor,
+                color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: IconThemeData(color: Colors.white), // This sets the back arrow color to white
       ),
       body: Container(
         padding: const EdgeInsets.all(20),

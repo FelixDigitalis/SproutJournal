@@ -85,7 +85,7 @@ class _GartenfreundeWelcomeState extends State<GartenfreundeWelcome> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignIn(email: email)),
+                                    builder: (context) => Login(email: email)),
                               );
                             } else {
                               Navigator.push(
@@ -102,7 +102,7 @@ class _GartenfreundeWelcomeState extends State<GartenfreundeWelcome> {
                         }
                       }
                     },
-                    child: const Text('Fortfahren'),
+                    child: const Text('Fortfahren', style: TextStyle(color: Colors.white),),
                   ),
                 ],
               ),
