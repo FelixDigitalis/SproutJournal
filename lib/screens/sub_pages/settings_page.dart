@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'hint_page.dart';
 
 class SettingsMenu extends StatefulWidget {
   const SettingsMenu({super.key});
@@ -31,6 +32,20 @@ class _SettingsMenuState extends State<SettingsMenu> {
                   color: Colors.black,
                 )),
             onTap: () {},
+          ),
+          ListTile(
+            title: const Text('Tipps',
+                style: TextStyle(
+                  color: Colors.black,
+                )),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HintPage(onDismiss: () {
+                  Navigator.pop(context); 
+                })),
+              );
+            },
           ),
         ],
       ),

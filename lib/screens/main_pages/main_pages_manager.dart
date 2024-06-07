@@ -9,9 +9,7 @@ import 'gartenfreunde_page.dart';
 import 'journal_feed.dart';
 import 'library_feed.dart';
 import '../sub_pages/gartenfreunde/gartenfreunde_user_search.dart';
-
 class MainPagesManager extends StatefulWidget {
-  /* Class that manages all pages that can be reached by the main bottom bar */
   final int selectedIndex;
   const MainPagesManager({super.key, this.selectedIndex = 0});
 
@@ -24,29 +22,23 @@ class _MainPagesManagerState extends State<MainPagesManager> {
   late String _appBarTitle;
   final AuthService _auth = AuthService();
 
-  late List<Widget> _widgetOptions;
-  late List<String> _titles;
+  final List<Widget> _widgetOptions = <Widget>[
+    const JournalFeed(),
+    const PlantFeed(),
+    const GartenfreundePage(),
+  ];
+
+  final List<String> _titles = [
+    'SproutJournal 🌱',
+    'SproutJournal 🌱',
+    'Gartenfreunde 🌱',
+  ];
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
     _appBarTitle = _titles[_selectedIndex];
-    _initWidgetOptions();
-  }
-
-  void _initWidgetOptions() {
-    _widgetOptions = <Widget>[
-      const JournalFeed(),
-      const PlantFeed(),
-      GartenfreundePage(key: UniqueKey()), // Add a unique key
-    ];
-
-    _titles = [
-      'SproutJournal 🌱',
-      'SproutJournal 🌱',
-      'Gartenfreunde 🌱',
-    ];
   }
 
   void _onItemTapped(int index) {
