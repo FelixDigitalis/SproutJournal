@@ -7,7 +7,7 @@ class HintPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = Theme.of(context).colorScheme.secondary;
+    const Color backgroundColor = Colors.white;
 
     return Scaffold(
       backgroundColor: backgroundColor,

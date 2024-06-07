@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprout_journal/utils/log.dart';
 import '../../../models/user_model.dart';
 import '../../../database_services/firebase/firebase_auth.dart';
@@ -9,6 +10,8 @@ import 'gartenfreunde_page.dart';
 import 'journal_feed.dart';
 import 'library_feed.dart';
 import '../sub_pages/gartenfreunde/gartenfreunde_user_search.dart';
+import '../sub_pages/hint_page.dart'; // Import HintPage
+
 class MainPagesManager extends StatefulWidget {
   final int selectedIndex;
   const MainPagesManager({super.key, this.selectedIndex = 0});
@@ -21,6 +24,7 @@ class _MainPagesManagerState extends State<MainPagesManager> {
   late int _selectedIndex;
   late String _appBarTitle;
   final AuthService _auth = AuthService();
+  bool _isFirstUse = false;
 
   final List<Widget> _widgetOptions = <Widget>[
     const JournalFeed(),
@@ -39,6 +43,18 @@ class _MainPagesManagerState extends State<MainPagesManager> {
     super.initState();
     _selectedIndex = widget.selectedIndex;
     _appBarTitle = _titles[_selectedIndex];
+    _checkFirstUse();
+  }
+
+  Future<void> _checkFirstUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstUse = prefs.getBool('isFirstUse') ?? true;
+
+    if (isFirstUse) {
+      setState(() {
+        _isFirstUse = true;
+      });
+    }
   }
 
   void _onItemTapped(int index) {
@@ -48,9 +64,21 @@ class _MainPagesManagerState extends State<MainPagesManager> {
     });
   }
 
+  void _onFinishHint() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstUse', false);
+    setState(() {
+      _isFirstUse = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
+
+    if (_isFirstUse) {
+      return HintPage(onDismiss: _onFinishHint);
+    }
 
     return Scaffold(
       appBar: AppBar(
