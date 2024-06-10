@@ -18,13 +18,6 @@ class HintPage extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Theme.of(context).colorScheme.onPrimary)),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.close, color: Colors.white),
-            tooltip: 'Schließen',
-            onPressed: onDismiss,
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -78,18 +71,18 @@ class HintPage extends StatelessWidget {
               ),
             )),
             const SizedBox(height: 20),
-            _buildHintItem(context, Icons.settings, 'Einstellungen', RichText(
+            _buildHintItem(context, Icons.tips_and_updates, 'Tipps', RichText(
               text: const TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Falls du die Tipps noch einmal brauchst, kannst du sie jederzeit in den ',
+                    text: 'Falls du die Tipps noch einmal brauchst, kannst du sie jederzeit unter ',
                     style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
                   WidgetSpan(
                     child: Icon(Icons.settings, color: Colors.black, size: 16),
                   ),
                   TextSpan(
-                    text: ' wieder aufrufen.',
+                    text: ' in den Einstellungen wieder aufrufen.',
                     style: TextStyle(color: Colors.black54, fontSize: 16),
                   ),
                 ],
@@ -99,7 +92,7 @@ class HintPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: onDismiss,
-                child: const Text('Verstanden'),
+                child: const Text('Verstanden', style: TextStyle(fontSize: 24)),
               ),
             ),
           ],

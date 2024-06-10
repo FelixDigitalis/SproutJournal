@@ -59,7 +59,7 @@ class JournalEntryElement extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
                         height: 200,
-                        color: Colors.grey[300], 
+                        color: Colors.grey[300],
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),

@@ -19,6 +19,7 @@ class PlantDescriptionPage extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.onPrimary)),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -4,7 +4,6 @@ import '../../../models/user_model.dart';
 import '../../../utils/log.dart';
 import '../../services/post_notifer.dart';
 
-
 class GartenfreundePostingElement extends StatefulWidget {
   const GartenfreundePostingElement({super.key});
 
@@ -16,6 +15,7 @@ class GartenfreundePostingElement extends StatefulWidget {
 class GartenfreundePostingElementState
     extends State<GartenfreundePostingElement> {
   final _postController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,25 +51,42 @@ class GartenfreundePostingElementState
           ),
         ),
         const SizedBox(width: 10),
-        ElevatedButton(
-          onPressed: () async {
-            final content = _postController.text;
-            if (content.isNotEmpty) {
-              try {
-                final postNotifier = Provider.of<PostNotifier>(context, listen: false);
-                await postNotifier.addPost(user.uid, content);
-                _postController.clear();
-              } catch (e) {
-                Log().e('Failed to add post: $e');
-              }
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Gebe eine Nachricht ein!')),
-              );
-            }
-          },
-          child: const Icon(Icons.send),
-        ),
+        _isLoading
+            ? SizedBox(
+                width: 48,
+                height: 48,
+                child: CircularProgressIndicator(),
+              )
+            : SizedBox(
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final content = _postController.text;
+                    if (content.isNotEmpty) {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      try {
+                        final postNotifier =
+                            Provider.of<PostNotifier>(context, listen: false);
+                        await postNotifier.addPost(user.uid, content);
+                        _postController.clear();
+                      } catch (e) {
+                        Log().e('Failed to add post: $e');
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Gebe eine Nachricht ein!')),
+                      );
+                    }
+                  },
+                  child: const Icon(Icons.send),
+                ),
+              ),
       ],
     );
   }

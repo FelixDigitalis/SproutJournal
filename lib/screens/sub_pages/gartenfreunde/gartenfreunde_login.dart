@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
                 fontSize: 24,
                 fontWeight: FontWeight.bold)),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        iconTheme: IconThemeData(color: Colors.white), // This sets the back arrow color to white
+        iconTheme: const IconThemeData(color: Colors.white), 
       ),
       body: Container(
         padding: const EdgeInsets.all(20),
