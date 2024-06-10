@@ -30,7 +30,6 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   late int dbUUID;
   late bool hasDateBeenUpdated;
   List<Map<String, dynamic>> _journalEntries = [];
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -85,9 +84,20 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                 fetchJournalEntries: _refreshJournalEntries,
               ),
               const SizedBox(height: 20),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _buildJournalEntriesList(),
+              Expanded(
+                child: FutureBuilder<void>(
+                  future: _fetchJournalEntries(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      return _buildJournalEntriesList();
+                    }
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -96,25 +106,22 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   }
 
   Future<void> _fetchJournalEntries() async {
-    setState(() {
-      _isLoading = true;
-    });
+    if (_journalEntries.isNotEmpty) {
+      return;
+    } else {
+      final entries = await JournalEntryManager.instance.getAllJournalEntries();
 
-    final entries = await JournalEntryManager.instance
-        .getAllJournalEntries();
-
-    setState(() {
-      _isLoading = false;
-      _journalEntries = entries
-          .where((entry) => entry['journalManagerID'] == plantID)
-          .toList();
-    });
+      setState(() {
+        _journalEntries = entries
+            .where((entry) => entry['journalManagerID'] == plantID)
+            .toList();
+      });
+    }
   }
 
   Future<void> _refreshJournalEntries() async {
     setState(() {
       _journalEntries.clear();
-      _isLoading = false;
     });
     _fetchJournalEntries();
   }
@@ -171,14 +178,16 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
+        icon: Icon(Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onPrimary),
         onPressed: () {
           Navigator.pop(context, hasDateBeenUpdated);
         },
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.onPrimary),
+          icon: Icon(Icons.delete,
+              color: Theme.of(context).colorScheme.onPrimary),
           onPressed: () {
             _showDeletePlantDialog(context);
           },
@@ -208,7 +217,8 @@ class JournalEntryPageState extends State<JournalEntryPage> {
               },
               child: Text(
                 'Abbrechen',
-                style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
             TextButton(
