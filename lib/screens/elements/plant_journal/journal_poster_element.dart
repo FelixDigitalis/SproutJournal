@@ -1,8 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../database_services/sqllite/journal_entry_manager.dart';
 import '../../../utils/log.dart';
 
@@ -121,12 +122,17 @@ class JournalPosterElementState extends State<JournalPosterElement> {
     Log().i('Adding journal entry');
     if (widget.postController.text.isNotEmpty || _selectedImagePath != null) {
       if (_selectedImagePath != null) {
-        await JournalEntryManager.instance.addJournalEntry(
-          widget.plantID,
-          widget.postController.text,
-          photoPath: _selectedImagePath,
-        );
-        _popImageFromPreview();
+        if (await _requestPermission(Permission.storage)) {
+          final savedImage = await _saveImagePermanently(File(_selectedImagePath!));
+          await JournalEntryManager.instance.addJournalEntry(
+            widget.plantID,
+            widget.postController.text,
+            photoPath: savedImage.path,
+          );
+          _popImageFromPreview();
+        } else {
+          Log().e('Storage permission not granted');
+        }
       } else {
         await JournalEntryManager.instance.addJournalEntry(
           widget.plantID,
@@ -175,6 +181,29 @@ class JournalPosterElementState extends State<JournalPosterElement> {
       Log().e('Compress error: $e');
       return file;
     }
+  }
+
+  Future<File> _saveImagePermanently(File image) async {
+    final directory = await getExternalStorageDirectory();
+    final imagePath = '${directory?.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final File savedImage = await image.copy(imagePath);
+    return savedImage;
+  }
+
+  Future<bool> _requestPermission(Permission permission) async {
+    final status = await permission.request();
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      Log().e('Permission denied. Requesting permission again.');
+      final newStatus = await permission.request();
+      return newStatus.isGranted;
+    } else if (status.isPermanentlyDenied) {
+      Log().e('Permission permanently denied. Cannot request permission.');
+      openAppSettings();
+      return false;
+    }
+    return false;
   }
 
   void _popImageFromPreview() {

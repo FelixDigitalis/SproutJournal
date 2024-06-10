@@ -38,7 +38,7 @@ class JournalFeedElementState extends State<JournalFeedElement> {
         bool hasDateBeenUpdated = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PlantJournalPage(
+            builder: (context) => JournalEntryPage(
               plant: widget.plant,
               plantFromManager: widget.plantFromManager,
             ),
