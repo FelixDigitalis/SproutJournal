@@ -41,7 +41,6 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     plantID = widget.plantFromManager['plantID'];
     dbUUID = widget.plantFromManager['id'];
     hasDateBeenUpdated = false;
-    _fetchJournalEntries();
   }
 
   @override

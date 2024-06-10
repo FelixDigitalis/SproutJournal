@@ -52,7 +52,7 @@ class GartenfreundePostingElementState
         ),
         const SizedBox(width: 10),
         _isLoading
-            ? SizedBox(
+            ? const SizedBox(
                 width: 48,
                 height: 48,
                 child: CircularProgressIndicator(),
