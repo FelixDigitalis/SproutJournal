@@ -79,11 +79,19 @@ class App extends StatelessWidget {
   Future<bool> _checkAndRequestPermissions() async {
     Log().i("Checking permissions");
 
-    // Check and request storage permissions
-    PermissionStatus status = await Permission.storage.status;
-    if (!status.isGranted) {
-      status = await Permission.storage.request();
+    // Request and check storage permission
+    PermissionStatus status = await Permission.photos.status;
+    if (status.isDenied || status.isRestricted || status.isPermanentlyDenied) {
+      Log().i("Status: $status");
+      // Request the permission
+      status = await Permission.photos.request();
     }
+
+    if (status.isPermanentlyDenied) {
+      // Open app settings to manually enable permission
+      openAppSettings();
+    }
+      Log().i("Status 2: $status");
 
     return status.isGranted;
   }

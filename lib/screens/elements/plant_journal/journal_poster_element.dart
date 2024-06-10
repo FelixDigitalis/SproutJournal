@@ -122,7 +122,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
     Log().i('Adding journal entry');
     if (widget.postController.text.isNotEmpty || _selectedImagePath != null) {
       if (_selectedImagePath != null) {
-        if (await _requestPermission(Permission.storage)) {
+        if (await _requestPermission(Permission.photos)) {
           final savedImage = await _saveImagePermanently(File(_selectedImagePath!));
           await JournalEntryManager.instance.addJournalEntry(
             widget.plantID,
