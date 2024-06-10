@@ -36,3 +36,27 @@ The folder [snapshots](./snapshots/) contains images of the gui development. The
 ### Firebase
 
 To build your own app you need a Google Account. [Enable Firebase](https://firebase.google.com/docs/flutter/setup) for the Google Account and insert your own Credentials in a _.env_ file in the root directory.
+
+### Build
+
+run `flutter build apk --split-per-abi` to build the app. The app will be built for the following architectures:
+
+#### 1. app-arm64-v8a-release.apk:
+
+Architecture: ARM 64-bit
+ABI: arm64-v8a
+Details: This APK is optimized for 64-bit ARM processors, which are common in modern smartphones and tablets. This is the recommended APK for most devices.
+
+#### 2. app-armeabi-v7a-release.apk: 
+
+Architecture: ARM 32-bit
+ABI: armeabi-v7a
+Details: This APK is optimized for 32-bit ARM processors, which are found in older and some lower-end Android devices. 
+
+#### 3. app-x86_64-release.apk:
+
+Architecture: x86 64-bit
+ABI: x86_64
+Details: This APK is optimized for 64-bit x86 processors, which are commonly used in certain tablets, Android emulators, and some niche devices. 
+
+The files can be found in the folder `build/app/outputs/flutter-apk/`.

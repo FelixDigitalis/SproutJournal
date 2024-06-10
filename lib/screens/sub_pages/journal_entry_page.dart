@@ -18,10 +18,10 @@ class PlantJournalPage extends StatefulWidget {
   });
 
   @override
-  PlantJournalPageState createState() => PlantJournalPageState();
+  JournalEntryPage createState() => JournalEntryPage();
 }
 
-class PlantJournalPageState extends State<PlantJournalPage> {
+class JournalEntryPage extends State<PlantJournalPage> {
   late TextEditingController _dateController;
   late TextEditingController _postController;
   late String plantingDate;
@@ -29,6 +29,7 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   late int dbUUID;
   late bool hasDateBeenUpdated;
   List<Map<String, dynamic>> _journalEntries = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -80,10 +81,12 @@ class PlantJournalPageState extends State<PlantJournalPage> {
                 postController: _postController,
                 plantID: plantID,
                 uuid: dbUUID,
-                fetchJournalEntries: _fetchJournalEntries,
+                fetchJournalEntries: _refreshJournalEntries,
               ),
               const SizedBox(height: 20),
-              _buildJournalEntriesList(),
+              _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _buildJournalEntriesList(),
             ],
           ),
         ),
@@ -92,12 +95,27 @@ class PlantJournalPageState extends State<PlantJournalPage> {
   }
 
   Future<void> _fetchJournalEntries() async {
-    final entries = await JournalEntryManager.instance.getAllJournalEntries();
     setState(() {
+      _isLoading = true;
+    });
+
+    final entries = await JournalEntryManager.instance
+        .getAllJournalEntries();
+
+    setState(() {
+      _isLoading = false;
       _journalEntries = entries
           .where((entry) => entry['journalManagerID'] == plantID)
           .toList();
     });
+  }
+
+  Future<void> _refreshJournalEntries() async {
+    setState(() {
+      _journalEntries.clear();
+      _isLoading = false;
+    });
+    _fetchJournalEntries();
   }
 
   void _updatePlantingDate(String newDate) {
