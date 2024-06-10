@@ -185,6 +185,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
 
   Future<File> _saveImagePermanently(File image) async {
     final directory = await getExternalStorageDirectory();
+    Log().i('Saving image to: ${directory?.path}');
     final imagePath = '${directory?.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
     final File savedImage = await image.copy(imagePath);
     return savedImage;
@@ -192,18 +193,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
 
   Future<bool> _requestPermission(Permission permission) async {
     final status = await permission.request();
-    if (status.isGranted) {
-      return true;
-    } else if (status.isDenied) {
-      Log().e('Permission denied. Requesting permission again.');
-      final newStatus = await permission.request();
-      return newStatus.isGranted;
-    } else if (status.isPermanentlyDenied) {
-      Log().e('Permission permanently denied. Cannot request permission.');
-      openAppSettings();
-      return false;
-    }
-    return false;
+    return status.isGranted;
   }
 
   void _popImageFromPreview() {
