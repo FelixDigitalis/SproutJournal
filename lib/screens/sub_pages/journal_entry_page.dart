@@ -30,6 +30,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   late int dbUUID;
   late bool hasDateBeenUpdated;
   List<Map<String, dynamic>> _journalEntries = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     plantID = widget.plantFromManager['plantID'];
     dbUUID = widget.plantFromManager['id'];
     hasDateBeenUpdated = false;
+    _fetchJournalEntries();
   }
 
   @override
@@ -83,19 +85,11 @@ class JournalEntryPageState extends State<JournalEntryPage> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: FutureBuilder<void>(
-                  future: _fetchJournalEntries(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      Log().e('Error fetching journal entries: ${snapshot.error}');
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    } else {
-                      return _buildJournalEntriesList();
-                    }
-                  },
-                ),
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _journalEntries.isEmpty
+                        ? const Center(child: Text('Bisher noch keine Einträge im Journal.'))
+                        : _buildJournalEntriesList(),
               ),
             ],
           ),
@@ -106,20 +100,22 @@ class JournalEntryPageState extends State<JournalEntryPage> {
 
   Future<void> _fetchJournalEntries() async {
     try {
-      if (_journalEntries.isEmpty) {
-        final entries = await JournalEntryManager.instance.getJournalEntryById(dbUUID);
-        setState(() {
-          _journalEntries = entries.toList();
-        });
-      }
+      final entries = await JournalEntryManager.instance.getJournalEntryById(dbUUID);
+      setState(() {
+        _journalEntries = entries.toList();
+        _isLoading = false;
+      });
     } catch (e) {
       Log().e('Error fetching journal entries: $e');
-      rethrow;
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> _refreshJournalEntries() async {
     setState(() {
+      _isLoading = true;
       _journalEntries.clear();
     });
     await _fetchJournalEntries();
