@@ -83,6 +83,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                 fetchJournalEntries: _refreshJournalEntries,
               ),
               const SizedBox(height: 20),
+              // FIXME:
               Expanded(
                 child: FutureBuilder<void>(
                   future: _fetchJournalEntries(),
@@ -108,13 +109,12 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     if (_journalEntries.isNotEmpty) {
       return;
     } else {
-      final entries = await JournalEntryManager.instance.getAllJournalEntries();
-
+      final entries =
+          await JournalEntryManager.instance.getJournalEntryById(dbUUID);
       setState(() {
-        _journalEntries = entries
-            .where((entry) => entry['journalManagerID'] == plantID)
-            .toList();
+        _journalEntries = entries.toList();
       });
+      return;
     }
   }
 

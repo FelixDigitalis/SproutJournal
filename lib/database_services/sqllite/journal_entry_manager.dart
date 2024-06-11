@@ -5,7 +5,7 @@ import 'package:sprout_journal/utils/log.dart';
 
 class JournalEntryManager extends DatabaseManager {
   static const table = "journalEntries";
-  static const journalManagerTable = "inventory";
+  static const inventoryTable = "inventory";
 
   JournalEntryManager._privateConstructor();
   static final JournalEntryManager instance =
@@ -20,7 +20,7 @@ class JournalEntryManager extends DatabaseManager {
       text TEXT DEFAULT NULL,
       date DATE DEFAULT (DATETIME('now')),
       photoPath TEXT DEFAULT NULL,
-      FOREIGN KEY (journalManagerID) REFERENCES $journalManagerTable (id) ON DELETE CASCADE,
+      FOREIGN KEY (journalManagerID) REFERENCES $inventoryTable (id) ON DELETE CASCADE,
       CHECK (text IS NOT NULL OR photoPath IS NOT NULL)
     )
   ''');
@@ -56,6 +56,27 @@ class JournalEntryManager extends DatabaseManager {
     return entries;
   }
 
+   Future<List<Map<String, dynamic>>> getJournalEntryById(int uuid) async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> entries = await db.rawQuery('''
+      SELECT 
+        id,
+        journalManagerID,
+        text,
+        strftime('%d.%m.%Y %H:%M', date) AS date,
+        photoPath
+      FROM 
+        $table
+      WHERE
+        journalManagerID = $uuid
+      GROUP BY 
+        date
+      ORDER BY 
+        date DESC
+    ''');
+    return entries;
+  }
+
   Future<int> deleteJournalEntry(int id) async {
     final db = await instance.database;
     return await db.delete(table, where: 'id = ?', whereArgs: [id]);
@@ -72,15 +93,7 @@ class JournalEntryManager extends DatabaseManager {
     return await db.update(table, row, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<Map<String, dynamic>?> getJournalEntryById(int id) async {
-    final db = await instance.database;
-    final List<Map<String, dynamic>> results =
-        await db.query(table, where: 'id = ?', whereArgs: [id]);
-    if (results.isNotEmpty) {
-      return results.first;
-    }
-    return null;
-  }
+ 
 
   Future<int> addPhotoPathToJournalEntry(int id, String photoPath) async {
     final db = await instance.database;
