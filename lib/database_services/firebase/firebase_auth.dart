@@ -8,7 +8,7 @@ class AuthService {
   FirebaseService? fbService;
 
   Future<UserModel?> _userFromFirebaseUser(User? fbUser) async {
-    // HACK: bc after registration the user is not yet available
+    // bc after registration the user is not yet available
     if (fbUser != null) {
       FirebaseService fbService = FirebaseService(uid: fbUser.uid);
       const int maxAttempts = 5;
