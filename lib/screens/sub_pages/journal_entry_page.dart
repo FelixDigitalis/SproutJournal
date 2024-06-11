@@ -53,7 +53,6 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      // https://docs.flutter.dev/release/breaking-changes/android-predictive-back
       canPop: false,
       onPopInvoked: (bool hasPoped) {
         if (!hasPoped) {
@@ -83,7 +82,6 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                 fetchJournalEntries: _refreshJournalEntries,
               ),
               const SizedBox(height: 20),
-              // FIXME:
               Expanded(
                 child: FutureBuilder<void>(
                   future: _fetchJournalEntries(),
@@ -91,6 +89,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
+                      Log().e('Error fetching journal entries: ${snapshot.error}');
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
                       return _buildJournalEntriesList();
@@ -106,15 +105,16 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   }
 
   Future<void> _fetchJournalEntries() async {
-    if (_journalEntries.isNotEmpty) {
-      return;
-    } else {
-      final entries =
-          await JournalEntryManager.instance.getJournalEntryById(dbUUID);
-      setState(() {
-        _journalEntries = entries.toList();
-      });
-      return;
+    try {
+      if (_journalEntries.isEmpty) {
+        final entries = await JournalEntryManager.instance.getJournalEntryById(dbUUID);
+        setState(() {
+          _journalEntries = entries.toList();
+        });
+      }
+    } catch (e) {
+      Log().e('Error fetching journal entries: $e');
+      rethrow;
     }
   }
 
@@ -122,7 +122,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     setState(() {
       _journalEntries.clear();
     });
-    _fetchJournalEntries();
+    await _fetchJournalEntries();
   }
 
   void _updatePlantingDate(String newDate) {
@@ -150,8 +150,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
               },
               child: Text(
                 'Abbrechen',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
             TextButton(
@@ -216,8 +215,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
               },
               child: Text(
                 'Abbrechen',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
             TextButton(
@@ -237,14 +235,12 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   }
 
   Widget _buildJournalEntriesList() {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: _journalEntries.length,
-        itemBuilder: (context, index) {
-          final entry = _journalEntries[index];
-          return _buildJournalEntryElement(entry, index);
-        },
-      ),
+    return ListView.builder(
+      itemCount: _journalEntries.length,
+      itemBuilder: (context, index) {
+        final entry = _journalEntries[index];
+        return _buildJournalEntryElement(entry, index);
+      },
     );
   }
 
@@ -287,71 +283,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                     },
                   );
                 },
-                child: FutureBuilder<File>(
-                  future: _loadImage(entry['photoPath']),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Container(
-                        height: 200,
-                        color: Colors.grey[300],
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    } else if (snapshot.hasError) {
-                      Log().e('Error loading image: ${snapshot.error}');
-                      return Container(
-                        height: 200,
-                        color: Colors.grey[300],
-                        child: const Center(
-                          child: Icon(Icons.error, color: Colors.red),
-                        ),
-                      );
-                    } else if (snapshot.hasData) {
-                      final imageFile = snapshot.data!;
-                      return FutureBuilder<bool>(
-                        future: _isImageVertical(imageFile.path),
-                        builder: (context, orientationSnapshot) {
-                          if (orientationSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: const CircularProgressIndicator(),
-                            );
-                          } else if (orientationSnapshot.hasError) {
-                            Log().e(
-                                'Error determining image orientation: ${orientationSnapshot.error}');
-                            return Container(
-                              padding: const EdgeInsets.all(10.0),
-                              child: const Icon(Icons.error),
-                            );
-                          } else {
-                            final isVertical =
-                                orientationSnapshot.data ?? false;
-                            return Container(
-                              padding: const EdgeInsets.all(10.0),
-                              constraints: isVertical
-                                  ? const BoxConstraints(maxWidth: 200)
-                                  : const BoxConstraints(),
-                              child: Image.file(
-                                imageFile,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }
-                        },
-                      );
-                    } else {
-                      return Container(
-                        height: 200,
-                        color: Colors.grey[300],
-                        child: const Center(
-                          child: Icon(Icons.error, color: Colors.red),
-                        ),
-                      );
-                    }
-                  },
-                ),
+                child: _buildImage(entry['photoPath']),
               ),
             Text(entry['date'],
                 style: TextStyle(
@@ -360,6 +292,71 @@ class JournalEntryPageState extends State<JournalEntryPage> {
         ),
         onLongPress: () => _showDeleteDialog(context, entry, index),
       ),
+    );
+  }
+
+  Widget _buildImage(String path) {
+    return FutureBuilder<File>(
+      future: _loadImage(path),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          Log().e('Error loading image: ${snapshot.error}');
+          return Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: const Center(
+              child: Icon(Icons.error, color: Colors.red),
+            ),
+          );
+        } else if (snapshot.hasData) {
+          final imageFile = snapshot.data!;
+          return FutureBuilder<bool>(
+            future: _isImageVertical(imageFile.path),
+            builder: (context, orientationSnapshot) {
+              if (orientationSnapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const CircularProgressIndicator(),
+                );
+              } else if (orientationSnapshot.hasError) {
+                Log().e('Error determining image orientation: ${orientationSnapshot.error}');
+                return Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Icon(Icons.error),
+                );
+              } else {
+                final isVertical = orientationSnapshot.data ?? false;
+                return Container(
+                  padding: const EdgeInsets.all(10.0),
+                  constraints: isVertical
+                      ? const BoxConstraints(maxWidth: 200)
+                      : const BoxConstraints(),
+                  child: Image.file(
+                    imageFile,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              }
+            },
+          );
+        } else {
+          return Container(
+            height: 200,
+            color: Colors.grey[300],
+            child: const Center(
+              child: Icon(Icons.error, color: Colors.red),
+            ),
+          );
+        }
+      },
     );
   }
 
