@@ -1,11 +1,11 @@
 buildscript {
-    ext.kotlin_version = '1.8.0' // Add this line to specify the Kotlin version
+    ext.kotlin_version = '2.0.0' // Add this line to specify the Kotlin version
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2' // Adjust this version if needed
+        classpath 'com.android.tools.build:gradle:7.0.4' // Adjust this version if needed
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Add this line for the Kotlin Gradle plugin
     }
 }
