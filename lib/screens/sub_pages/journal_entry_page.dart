@@ -31,6 +31,8 @@ class JournalEntryPageState extends State<JournalEntryPage> {
   late bool hasDateBeenUpdated;
   List<Map<String, dynamic>> _journalEntries = [];
   bool _isLoading = true;
+  Map<int, File?> _loadedImages = {};
+  Map<int, bool?> _imageOrientations = {};
 
   @override
   void initState() {
@@ -88,7 +90,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                 child: _isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : _journalEntries.isEmpty
-                        ? const Center(child: Text('Bisher noch keine Einträge im Journal.'))
+                        ? const Center(child: Text('Bisher noch keine Journal Einträge.'))
                         : _buildJournalEntriesList(),
               ),
             ],
@@ -105,6 +107,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
         _journalEntries = entries.toList();
         _isLoading = false;
       });
+      _preloadImages();
     } catch (e) {
       Log().e('Error fetching journal entries: $e');
       setState(() {
@@ -230,6 +233,25 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     );
   }
 
+  Future<void> _preloadImages() async {
+    for (int i = 0; i < _journalEntries.length; i++) {
+      final entry = _journalEntries[i];
+      if (entry['photoPath'] != null) {
+        final file = await _loadImage(entry['photoPath']);
+        final isVertical = await _isImageVertical(entry['photoPath']);
+        setState(() {
+          _loadedImages[i] = file;
+          _imageOrientations[i] = isVertical;
+        });
+      } else {
+        setState(() {
+          _loadedImages[i] = null;
+          _imageOrientations[i] = null;
+        });
+      }
+    }
+  }
+
   Widget _buildJournalEntriesList() {
     return ListView.builder(
       itemCount: _journalEntries.length,
@@ -279,7 +301,7 @@ class JournalEntryPageState extends State<JournalEntryPage> {
                     },
                   );
                 },
-                child: _buildImage(entry['photoPath']),
+                child: _buildImagePlaceholderOrActual(index),
               ),
             Text(entry['date'],
                 style: TextStyle(
@@ -291,69 +313,40 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     );
   }
 
-  Widget _buildImage(String path) {
-    return FutureBuilder<File>(
-      future: _loadImage(path),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            height: 200,
-            color: Colors.grey[300],
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else if (snapshot.hasError) {
-          Log().e('Error loading image: ${snapshot.error}');
-          return Container(
-            height: 200,
-            color: Colors.grey[300],
-            child: const Center(
-              child: Icon(Icons.error, color: Colors.red),
-            ),
-          );
-        } else if (snapshot.hasData) {
-          final imageFile = snapshot.data!;
-          return FutureBuilder<bool>(
-            future: _isImageVertical(imageFile.path),
-            builder: (context, orientationSnapshot) {
-              if (orientationSnapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: const CircularProgressIndicator(),
-                );
-              } else if (orientationSnapshot.hasError) {
-                Log().e('Error determining image orientation: ${orientationSnapshot.error}');
-                return Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: const Icon(Icons.error),
-                );
-              } else {
-                final isVertical = orientationSnapshot.data ?? false;
-                return Container(
-                  padding: const EdgeInsets.all(10.0),
-                  constraints: isVertical
-                      ? const BoxConstraints(maxWidth: 200)
-                      : const BoxConstraints(),
-                  child: Image.file(
-                    imageFile,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              }
-            },
-          );
-        } else {
-          return Container(
-            height: 200,
-            color: Colors.grey[300],
-            child: const Center(
-              child: Icon(Icons.error, color: Colors.red),
-            ),
-          );
-        }
-      },
-    );
+  Widget _buildImagePlaceholderOrActual(int index) {
+    final file = _loadedImages[index];
+    final isVertical = _imageOrientations[index];
+
+    if (file == null) {
+      return Container(
+        height: 200,
+        color: Colors.grey[300],
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Container(
+        padding: const EdgeInsets.all(10.0),
+        constraints: isVertical == true
+            ? null
+            : const BoxConstraints(maxWidth: 200),
+        child: Image.file(
+          file,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+  }
+
+  Future<File> _loadImage(String path) async {
+    try {
+      final file = File(path);
+      return file;
+    } catch (e) {
+      Log().e('Error in _loadImage: $e');
+      rethrow;
+    }
   }
 
   Future<bool> _isImageVertical(String path) async {
@@ -368,16 +361,6 @@ class JournalEntryPageState extends State<JournalEntryPage> {
     } catch (e) {
       Log().e('Error in _isImageVertical: $e');
       return false;
-    }
-  }
-
-  Future<File> _loadImage(String path) async {
-    try {
-      final file = File(path);
-      return file;
-    } catch (e) {
-      Log().e('Error in _loadImage: $e');
-      rethrow;
     }
   }
 }
