@@ -66,7 +66,7 @@ Run `flutter build apk --split-per-abi` to build the app. The app will be built 
    - ABI: x86_64
    - Details: This APK is optimized for 64-bit x86 processors, which are commonly used in certain tablets, Android emulators, and some niche devices. 
 
-The files can be found in the folder `build/app/outputs/flutter-apk/`.
+The files can be found in the folder `build/app/outputs/flutter-apk/`. When running `flutter build apk` this will build the app two, bundled in one APK. This is not recommended, as it will increase the size of the APK. 
 
 ### Issues
 
