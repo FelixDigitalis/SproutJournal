@@ -1,6 +1,10 @@
 ### General Information
 
-This app was developed during the summer semester of 2024 in the course "Ausgewählte Projekte der Informatik." The goal was to develop an Android app that helps users document and archive their planting and harvesting activities, as well as connect with fellow gardening enthusiasts. The GUI of the app is in German.
+This app was developed during the summer semester of 2024 in the course "Ausgewählte Projekte der Informatik." The goal was to develop an Android app that helps users document and archive their planting and harvesting activities, as well as connect with fellow gardening enthusiasts. The GUI of the app is in German. On the first launch, the app will ask for permission to access the device's storage. This is necessary for saving images of the plants and journal entries. The app then shows this explanation screen:
+
+<p align="center">
+  <img src="snapshots/final/final6.jpg" alt="snapshot_1" width="15%">
+</p>
 
 The app is divided into sections using a _BottomBar_ layout. The functions for documenting the growth of your plants are found in the _Journal_ and _Pflanzen_ sections, where users can document the growth of their plants. In the _Pflanzen_ section, a predefined plant profile can be selected and added to the "Journal" (the inventory). These plant profiles also provide useful tips on plant care.
 
@@ -68,6 +72,7 @@ The files can be found in the folder `build/app/outputs/flutter-apk/`.
 Besides standard issues in the development process, the following problems were encountered:
 
 - **Image loading**: The images in the app are saved to and loaded from the device storage. This causes the app to feel unsmooth when opening a Journal Page. Having many images in a Journal Page can sometimes cause the app to freeze for up to a second. Numerous attempts were made to solve this problem, which could be improved but not completely resolved. First, image caching was recommended but did not work in this special case. As a consequence, image compression to 25% was tested and implemented since this seemed to improve loading times significantly. Images are compressed before saving them to storage. Lastly, many minor improvements were made to the code to improve the loading times. This included intelligent loading of the feed. As long as the page is open, the feed will not reload but will be kept in RAM as a list. Even deleting elements from the feed will not lead to a reload of the feed. This is only done when a new page is opened.
+- **Combination of SQLite and Firebase**: The app uses both SQLite and Firebase. This was an architectural decision to enable the users to use the journal feature without having to register to a remote database. For the social media part, a local database would not be sufficient because users have to be able to access other users' data. This combination caused the problem of double implementation of a data storage system, resulting in a more complex code structure and increased development time.
 
 ### External Sources
 
