@@ -125,7 +125,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
         if (await _requestPermission(Permission.photos)) {
           final savedImage = await _saveImagePermanently(File(_selectedImagePath!));
           await JournalEntryManager.instance.addJournalEntry(
-            widget.plantID,
+            widget.uuid,
             widget.postController.text,
             photoPath: savedImage.path,
           );
@@ -135,7 +135,7 @@ class JournalPosterElementState extends State<JournalPosterElement> {
         }
       } else {
         await JournalEntryManager.instance.addJournalEntry(
-          widget.plantID,
+          widget.uuid,
           widget.postController.text,
         );
       }
