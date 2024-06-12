@@ -24,10 +24,9 @@ The _Gartenfreunde_ tab covers the app's social media functionality. Here, users
 
 ### Project Structure
 
-The folder [snapshots](./snapshots/) contains images of the GUI development. The folder [assets](./assets/) contains the assets added to the app. In [pubspec.yaml](./pubspec.yaml) all dependencies can be found. The main code is in the folder [lib](./lib/). [android](./android/) is an auto-generated folder that is needed for Flutter to build apps for Android.
+The folder [snapshots](./snapshots/) contains images of the GUI development. The folder [assets](./assets/) contains the assets added to the app. In [pubspec.yaml](./pubspec.yaml) all dependencies can be found. [android](./android/) is an auto-generated folder that is needed for Flutter to build apps for Android.
 
 The main code is in the folder [lib](./lib/) and is explained in the following:
-- **[lib](./lib)**: The main directory for the Flutter project, containing all the core application code and resources.
 
 - **[database_services](./lib/database_services)**: Includes all the services and managers related to database operations.
   - **[firebase](./lib/database_services/firebase)**: Contains files related to Firebase services such as authentication and general Firebase functionalities. Firebase is used solely for the Gartenfreunde part.
@@ -66,7 +65,7 @@ Run `flutter build apk --split-per-abi` to build the app. The app will be built 
    - ABI: x86_64
    - Details: This APK is optimized for 64-bit x86 processors, which are commonly used in certain tablets, Android emulators, and some niche devices. 
 
-The files can be found in the folder `build/app/outputs/flutter-apk/`. When running `flutter build apk` this will build the app bundeling the tree files in one APK. This is not recommended if you are aware of the target devices architecture, as it will increase the size of the APK. 
+The files can be found in the folder `build/app/outputs/flutter-apk/`. When running `flutter build apk` this will build the app bundeling the three files in one APK. This is not recommended if you are aware of the target devices architecture, as it will increase the size of the APK. 
 
 ### Testing
 
@@ -80,10 +79,16 @@ Besides standard issues in the development process, the following problems were 
 
 - **Image loading**: The images in the app are saved to and loaded from the device storage. This causes the app to feel unsmooth when opening a Journal Page. Having many images in a Journal Page can sometimes cause the app to freeze for up to a second. Numerous attempts were made to solve this issue, which could be improved but not completely resolved. First, image caching was recommended but did not work in this special case. Furthermore, image compression to 25% was tested and implemented since this seemed to improve loading times significantly. Images are compressed before saving them to storage. Lastly, many minor improvements were made to the code to improve the loading times. This included intelligent loading of the feed. As long as the page is open, the feed will not reload but will be kept in RAM as a list. Even deleting elements from the feed will not lead to a reload of the feed. This is only done when a new page is opened.
 - **Combination of SQLite and Firebase**: The app uses both SQLite and Firebase. This was an architectural decision to enable the users to use the journal feature without having to register to a remote database. For the social media part, a local database would not be sufficient because users have to be able to access other users' data. This combination caused the problem of double implementation of a data storage system, resulting in a more complex code structure and increased development time.
-- **Build warnings**: When running `flutter build apk --split-per-abi`, two build warnings pop up. The build still succeeds and the app works fine.
+- **Build warnings**: When running `flutter build apk --split-per-abi`, two build warnings pop up. The build still succeeds, and the app works fine.
   - ```Note: Some input files use or override a deprecated API. Note: Recompile with -Xlint:deprecation for details.```: This seems to be a known Flutter issue (see [here](https://github.com/flutter/flutter/issues/106537#issuecomment-1165558491))
-  - ```The binary version of its metadata is 1.9.0, expected version is 1.6.0.```: This seems to be a known issue due to version mismatches between the Kotlin version used to compile certain dependencies and the version expected by the project. The project uses a lot of different dependecies. What is recommended on the internet, is to change the Kotlin version in the Gradle file. This was tested with different Kotlin versions but the warning still persists. The app still works fine and the build succeeds. Therefore, this warning is not considered critical.
+  - ```The binary version of its metadata is 1.9.0, expected version is 1.6.0.```: This seems to be a known issue due to version mismatches between the Kotlin version used to compile certain dependencies and the version expected by the project. The project uses a lot of different dependecies. What is recommended on the internet, is to change the Kotlin version in the Gradle file. This was tested with different Kotlin versions, but the warning still persists. The app still works fine, and the build succeeds. Therefore, this warning is not considered critical.
 
+### Future Features
+
+All features that were planned for the app were implemented. During development, some new ideas for possible feature came up. Those are listed below:
+
+- Share entries from journal to Gartenfreunde
+- Make it possible in the GUI for the user to add their own plant profiles
 
 ### External Sources
 
